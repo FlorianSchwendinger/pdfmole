@@ -7,5 +7,5 @@ The **`R`** package **pdfmole** can used to read in tables from 'PDF'-files.
 To install the package, run the following code:
 
 ``` r
-devtools::install_github("ben-schwen/pdfmole")
+devtools::install_github("FlorianSchwendinger/pdfmole")
 ``` 
