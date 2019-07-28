@@ -1,7 +1,7 @@
 
 ##  ----------------------------------------------------------------------------
 #  align_columns
-#  =============
+# =============
 #' @title Align Columns
 #' @description TODO
 #' @param x a object inheriting from \code{'data.frame'}.
@@ -10,11 +10,12 @@
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
-align_columns <- function(x, method = c("fixed_width"), ...) {
+align_columns <- function(x, method = c("fixed_width", "automatic"), ...) {
     method <- match.arg(method)
     kwargs <- list(...)
     switch(method, 
-        fixed_width = align_columns_fixed_width(x, kwargs[["split_points"]]))
+        fixed_width = align_columns_fixed_width(x, kwargs[["split_points"]]),
+        automatic = align_columns_fixed_width(x, find_breaks(x)))
 }
 
 align_columns_fixed_width <- function(x, split_points) {
@@ -24,9 +25,21 @@ align_columns_fixed_width <- function(x, split_points) {
         x$col[is.na(x$col) & (xmean < split_points[i])] <- i
     }
     x$col[is.na(x$col)] <- length(split_points) + 1L
+    
+    plot_cols(x, split_points)
+    
     x
 }
 
+##  ----------------------------------------------------------------------------
+#  find_breaks
+# =============
+#' @title Find Breaks
+#' @description 
+#' @param x a object inheriting from \code{'data.frame'}.
+#' @return Returns an vector containing the colum breaks.
+#' @export
+##  ----------------------------------------------------------------------------
 find_breaks <- function(x) {
     se <- unlist(mapply(seq, x[, 'xstart'], x[, 'xend'], MoreArgs = list(by = 0.1)))
     h <- hist(se, breaks = 500, plot = FALSE)
@@ -34,7 +47,25 @@ find_breaks <- function(x) {
     h$counts[h$counts < low] <- 0L
     group <- (cumsum(h$counts != 0L) * (h$counts == 0L))
     b <- !duplicated(group, fromLast = TRUE) & group > 0
-    breaks <- head(tail(h$breaks, -1)[b], -1)
+    # breaks <- head(tail(h$breaks, -1)[b], -1)
+    breaks <- tail(h$breaks, -1)[b]
     breaks
+}
+
+plot_cols <- function(x, split_points){
+  stopifnot(inherits(x, "data.frame"), 
+            any(c("xstart", "xend", "ystart", "yend") %in% colnames(x)),
+            "col" %in% colnames(x))
+  
+  plot(c(min(x$xstart), max(x$xend)), c(min(x$ystart), max(x$yend)),
+       type = "n", xlab = "", ylab = "")
+  
+  graphics::rect(xleft = x$xstart, xright = x$xend, ytop = x$ystart, ybottom = x$yend,
+       border = x$col+1)
+  
+  if (is.null(split_points)) {split_points <- find_breaks(x)}
+  abline(v = split_points)
+  #abline(v = seq(0, max(x$xend), 10), lty = 2, col = "grey")
+  
 }
 

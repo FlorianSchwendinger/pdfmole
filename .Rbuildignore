@@ -3,3 +3,5 @@ Work
 R/dev
 
 
+^.*\.Rproj$
+^\.Rproj\.user$

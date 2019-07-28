@@ -4,7 +4,7 @@
 \alias{align_columns}
 \title{Align Columns}
 \usage{
-align_columns(x, method = c("fixed_width"), ...)
+align_columns(x, method = c("fixed_width", "automatic"), ...)
 }
 \arguments{
 \item{x}{a object inheriting from \code{'data.frame'}.}
