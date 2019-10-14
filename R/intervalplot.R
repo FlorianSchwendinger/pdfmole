@@ -16,6 +16,7 @@
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
 #' @return TODO
+#' @export 
 ##  ----------------------------------------------------------------------------
 intervalplot <- function(x, by = 0.1, offset = NULL, breaks = 500,
     grid_len = 20, widths = NULL, ...) UseMethod("intervalplot", x)

@@ -10,7 +10,7 @@ read_pdf_cars <- function() {
     pdf_file <- file.path(pdf_folder, "cars.pdf")
     if ( file.exists(pdf_file) ) {
 
-        pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 1L)
+        pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
         pdf
 
         d <- as.data.frame(pdf)
@@ -43,7 +43,58 @@ read_pdf_cars <- function() {
     }
 }
 
+read_pdf_mtcars <- function() {
+    pdf_folder <- system.file("pdfs", package = "pdfmole")
+    pdf_file <- file.path(pdf_folder, "mtcars.pdf")
+    
+    if ( file.exists(pdf_file) ) {
+        pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+        pdf
+
+        df <- as.data.frame(pdf)
+        head(df, 20)
+
+        blocks <- group_blocks(df)
+        head(blocks, 20)
+    
+        breaks <- find_breaks(blocks)
+        breaks
+    
+        rows <- align_rows(blocks, method = "hclust")
+        head(rows, 20)
+    
+        cols <- align_columns(rows, method = "automatic") 
+        head(cols, 20)
+    
+        colorplot(cols, breaks)
+    
+        M <- do.call(rbind, to_matrix(cols))
+        M <- rm_empty_rows(M)
+        M
+    
+        mtcars_new <- as.data.frame(M[-1, -1], stringsAsFactors = FALSE)
+        colnames(mtcars_new) <- M[1, -1]
+        rownames(mtcars_new) <- M[-1, 1]
+        mtcars_new
+    
+        stopifnot(all.equal(dim(mtcars), dim(mtcars_new)))
+        stopifnot(all.equal(colnames(mtcars), colnames(mtcars_new)))
+        stopifnot(all.equal(mtcars[, 1], as.numeric(mtcars_new[, 1])))
+        stopifnot(all.equal(mtcars[, 2], as.numeric(mtcars_new[, 2])))
+        stopifnot(all.equal(mtcars[, 3], as.numeric(mtcars_new[, 3])))
+        stopifnot(all.equal(mtcars[, 4], as.numeric(mtcars_new[, 4])))
+        stopifnot(all.equal(mtcars[, 5], as.numeric(mtcars_new[, 5])))
+        stopifnot(all.equal(mtcars[, 6], as.numeric(mtcars_new[, 6])))
+        stopifnot(all.equal(mtcars[, 7], as.numeric(mtcars_new[, 7])))
+        stopifnot(all.equal(mtcars[, 8], as.numeric(mtcars_new[, 8])))
+        stopifnot(all.equal(mtcars[, 9], as.numeric(mtcars_new[, 9])))
+        stopifnot(all.equal(mtcars[,10], as.numeric(mtcars_new[,10])))
+        stopifnot(all.equal(mtcars[,11], as.numeric(mtcars_new[,11])))
+    }
+}
+
 if (FALSE) {
-    read_pdf_cars()    
+    read_pdf_cars()
+    read_pdf_mtcars()
 }
 

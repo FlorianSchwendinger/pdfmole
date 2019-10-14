@@ -21,8 +21,6 @@ align_rows <- function(x, method = c("exact_match", "hclust"), ...) {
 align_rows_exact_match <- function(x, ...) {
     x$row <- match(x$ystart, sort(unique(x$ystart), decreasing = TRUE))
     
-    plot_rows(x)
-    
     x
 }
 
@@ -45,24 +43,5 @@ align_rows_hclust <- function(x, ...) {
     x <- x[order(x$ystart, decreasing = TRUE),]
     x$row <- match(x$row, unique(x$row))
     
-    plot_rows(x)
-    
     x
 }
-
-plot_rows <- function(x){
-  stopifnot(inherits(x, "data.frame"), 
-            any(c("xstart", "xend", "ystart", "yend") %in% colnames(x)),
-            "row" %in% colnames(x))
-  
-  x <- x[x$page == 0,]
-  
-  plot(c(min(x$xstart), max(x$xend)), c(min(x$ystart), max(x$yend)),
-       type = "n", xlab = "", ylab = "")
-  
-  graphics::rect(xleft = x$xstart, xright = x$xend, ytop = x$ystart, ybottom = x$yend,
-       border = x$row+1)
-}
-
-## class(z) <- union("pdf_data", class(z))
-## z

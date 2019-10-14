@@ -8,7 +8,7 @@ rm_na <- function(x) {
 #  ============
 #' @title Group Blocks
 #' @description TODO
-#' @param x a object inheriting from \code{'data.frame'}.
+#' @param x an object inheriting from \code{'data.frame'}.
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
