@@ -7,7 +7,7 @@
 group_blocks(x)
 }
 \arguments{
-\item{x}{a object inheriting from \code{'data.frame'}.}
+\item{x}{an object inheriting from \code{'data.frame'}.}
 }
 \value{
 Returns an object inheriting from \code{'data.frame'}.

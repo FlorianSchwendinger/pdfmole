@@ -15,6 +15,7 @@ rm_na <- function(x) {
 ## NOTE: check if the stuff has also to be ordered!!
 group_blocks <- function(x) {
     stopifnot(inherits(x, "data.frame"), "block" %in% colnames(x))
+    
     x <- rm_na(x)
     x <- split(x, x$block)
     group_block <- function(x) {

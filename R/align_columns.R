@@ -10,12 +10,12 @@
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
-align_columns <- function(x, method = c("fixed_width", "automatic"), ...) {
+align_columns <- function(x, method = c("fw", "auto"), ...) {
     method <- match.arg(method)
     kwargs <- list(...)
     switch(method, 
-        automatic = align_columns_fixed_width(x, find_breaks(x)),
-        fixed_width = align_columns_fixed_width(x, kwargs[["split_points"]]))
+        auto = align_columns_fixed_width(x, find_breaks(x)),
+        fw = align_columns_fixed_width(x, kwargs[["split_points"]]))
 }
 
 align_columns_fixed_width <- function(x, split_points) {

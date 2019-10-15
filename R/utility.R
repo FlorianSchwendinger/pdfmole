@@ -74,3 +74,13 @@ simplify.character <- function(x, dec = ".", ...) {
         as.double(y)
     }
 }
+
+rm_char <- function(x, c) {
+    x[x$text != c,]
+}
+
+rm_bound <- function(x, xmin, xmax, ymin, ymax) {
+    x[x$xstart > xmin & x$xend < xmax &
+      x$ystart > ymin & x$yend < ymax,]
+}
+

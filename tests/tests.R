@@ -22,7 +22,7 @@ read_pdf_cars <- function() {
         d <- align_rows(d)
         head(d, 20)
 
-        intervalplot(d)
+        intervalplot(d, 1)
         d <- align_columns(d, split_points = c(88, 130, 220))
         head(d, 20)
 
@@ -62,11 +62,14 @@ read_pdf_mtcars <- function() {
     
         rows <- align_rows(blocks, method = "hclust")
         head(rows, 20)
+
+        intervalplot(rows)
     
-        cols <- align_columns(rows, method = "automatic") 
+        cols <- align_columns(rows, method = "auto") 
         head(cols, 20)
     
         colorplot(cols, breaks)
+        textplot(cols, breaks)
     
         M <- do.call(rbind, to_matrix(cols))
         M <- rm_empty_rows(M)
@@ -91,6 +94,50 @@ read_pdf_mtcars <- function() {
         stopifnot(all.equal(mtcars[,10], as.numeric(mtcars_new[,10])))
         stopifnot(all.equal(mtcars[,11], as.numeric(mtcars_new[,11])))
     }
+}
+
+read_vnalf <- function() {
+    pdf_folder <- system.file("pdfs", package = "pdfmole")
+    pdf_file <- file.path(pdf_folder, "vnalf2011graz.pdf")
+    
+    if ( file.exists(pdf_file) ) {
+        pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+        pdf
+
+        df <- as.data.frame(pdf)
+        head(df, 20)
+
+        df_rm <- rm_char(df, ' ')
+        df_rm <- rm_char(df_rm, '\n')
+        head(df_rm, 20)
+
+        textplot(rm_bound(df_sort, 40.98952, 565.3481, 49.22358, 779.2361))
+
+        df_sort <- df_rm[order(df_rm$ystart, df_rm$yend, df_rm$xstart, df_rm$xend, decreasing = TRUE), ]
+        head(df_sort, 20)
+
+        breaks <- find_breaks(df_sort)
+        colorplot(df_sort)
+        
+        breaks <- c(60, 120, 210, 255, 300, 340, 400, 485, 530)
+        colorplot(df_sort, split_points = breaks)
+        textplot(df_sort, split_points = breaks)
+
+        rows <- align_rows(df_sort, method = "exact_match")
+        head(rows, 20)
+    
+        cols <- align_columns(rows, method = "fw", split_points = breaks) 
+        head(cols, 20)
+    
+        colorplot(cols, breaks)
+
+        M <- do.call(rbind, to_matrix(cols))
+        M <- rm_empty_rows(M)
+        M
+    
+        View(M)
+    }
+}
 }
 
 if (FALSE) {

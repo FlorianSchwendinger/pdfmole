@@ -4,13 +4,15 @@
 \alias{find_breaks}
 \title{Find Breaks}
 \usage{
-find_breaks(x)
+find_breaks(x, lower_bound = 0.25)
 }
 \arguments{
-\item{x}{a object inheriting from \code{'data.frame'}.}
+\item{x}{an object inheriting from \code{'data.frame'}.}
+
+\item{lower_bound}{a lower bound indicating with which ...}
 }
 \value{
-Returns an vector containing the colum breaks.
+Returns an vector containing the column breaks.
 }
 \description{
 Find Breaks

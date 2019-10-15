@@ -4,10 +4,10 @@
 \alias{align_columns}
 \title{Align Columns}
 \usage{
-align_columns(x, method = c("fixed_width", "automatic"), ...)
+align_columns(x, method = c("fw", "auto"), ...)
 }
 \arguments{
-\item{x}{a object inheriting from \code{'data.frame'}.}
+\item{x}{an object inheriting from \code{'data.frame'}.}
 
 \item{method}{a character string giving the method.}
 
