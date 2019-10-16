@@ -111,13 +111,12 @@ read_vnalf <- function() {
         df_rm <- rm_char(df_rm, '\n')
         head(df_rm, 20)
 
-        textplot(rm_bound(df_sort, 40.98952, 565.3481, 49.22358, 779.2361))
-
-        df_sort <- df_rm[order(df_rm$ystart, df_rm$yend, df_rm$xstart, df_rm$xend, decreasing = TRUE), ]
-        head(df_sort, 20)
+        select_area(df_rm)
+        df_sort <- rm_bound(df_rm, 37.1, 565, 49.2, 780.4)
+        textplot(df_sort)
 
         breaks <- find_breaks(df_sort)
-        colorplot(df_sort)
+        colorplot(df_sort, breaks)
         
         breaks <- c(60, 120, 210, 255, 300, 340, 400, 485, 530)
         colorplot(df_sort, split_points = breaks)
@@ -138,6 +137,30 @@ read_vnalf <- function() {
         View(M)
     }
 }
+
+
+read_pdf_agstat <- function() {
+    pdf_folder <- system.file("pdfs", package = "pdfmole")
+    pdf_file <- file.path(pdf_folder, "agstat.pdf")
+    
+    if ( file.exists(pdf_file) ) {
+        pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+        pdf
+
+        df <- as.data.frame(pdf)
+        head(df, 20)
+
+        lines <- extract_lines(pdf[[1]])
+        head(lines, 20)
+
+        plot_boxes(lines)
+        hlines <- lines[lines$horizontal,]
+        plot_boxes(hlines)
+        vlines <- lines[lines$vertical,]
+        plot_boxes(vlines))
+
+  
+    }
 }
 
 if (FALSE) {

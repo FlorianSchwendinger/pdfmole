@@ -48,7 +48,7 @@ textplot.pdf_document <- function(x, split_points = NULL, page = 0L) {
     axis(1, at = xgrid, labels = format(round(xgrid,0)), las = 2)
 
 
-  	if (!is.null(breaks)) {
+  	if (!is.null(split_points)) {
   		abline(v = split_points, col = "red")
   	} else {
   		abline(v = xlines, col = "red", lty = 5)

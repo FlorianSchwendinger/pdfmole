@@ -195,3 +195,18 @@ df_to_matrix <- function(x) {
     M
 }
 
+extract_lines <- function(x) {
+    stopifnot(inherits(x, 'pdf_page'))
+    stopifnot(length(x$line) > 0)
+
+    res <- as.data.frame(do.call(rbind, simplify_list(x$line)))
+    colnames(res) <- c('linewidth', 'xstart', 'ystart', 'xend', 'yend')
+
+    res$horizontal <- FALSE
+    res$vertical <- FALSE
+
+    res$horizontal[(res$yend - res$ystart) < 0.05] <- TRUE
+    res$vertical[(res$xend - res$xstart) < 0.05] <- TRUE
+
+    res
+}

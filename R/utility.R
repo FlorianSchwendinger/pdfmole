@@ -84,3 +84,14 @@ rm_bound <- function(x, xmin, xmax, ymin, ymax) {
       x$ystart > ymin & x$yend < ymax,]
 }
 
+plot_boxes <- function(x) {
+        plot(   c(  min(x$xstart, na.rm = TRUE), 
+                max(x$xend, na.rm = TRUE)), 
+            c(  min(x$ystart, na.rm = TRUE), 
+                max(x$yend, na.rm = TRUE)),
+        type = "n", xlab = "", ylab = "", xaxt = "n")
+
+        graphics::rect(xleft = x$xstart, xright = x$xend, 
+        ytop = x$ystart, ybottom = x$yend, border = 1)
+
+}
