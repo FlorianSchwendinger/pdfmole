@@ -58,3 +58,4 @@ textplot.pdf_document <- function(x, split_points = NULL, page = 0L) {
 #' @noRd
 #' @export
 textplot.data.frame <- textplot.pdf_document
+

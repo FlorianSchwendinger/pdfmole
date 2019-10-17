@@ -11,11 +11,13 @@
 #' @return Returns a object of class \code{"pdf\_df"}.
 #' @export
 ##  ----------------------------------------------------------------------------
-align_rows <- function(x, method = c("exact_match", "hclust"), ...) {
+align_rows <- function(x, method = c("exact_match", "hclust", "fw"), ...) {
     method <- match.arg(method)
+    kwargs <- list(...)
     switch(method, 
         exact_match = align_rows_exact_match(x, ...),
-        hclust = align_rows_hclust(x, ...))
+        hclust = align_rows_hclust(x, ...),
+        fw = align_rows_fixed_width(x, kwargs[["split_points"]]))
 }
 
 align_rows_exact_match <- function(x, ...) {
@@ -43,5 +45,17 @@ align_rows_hclust <- function(x, ...) {
     x <- x[order(x$ystart, decreasing = TRUE),]
     x$row <- match(x$row, unique(x$row))
     
+    x
+}
+
+align_rows_fixed_width <- function(x, split_points) {
+    x$row <- NA_integer_
+    xmean <- rowMeans(x[, c("ystart", "yend")])
+    for ( i in seq_along(split_points) ) {
+        x$row[is.na(x$row) & (xmean < split_points[i])] <- i
+    }
+    x$row[is.na(x$row)] <- length(split_points) + 1L
+
+    x$row <- (length(split_points) + 2) - x$row
     x
 }

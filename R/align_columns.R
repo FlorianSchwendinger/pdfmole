@@ -33,7 +33,7 @@ align_columns_fixed_width <- function(x, split_points) {
 #  find_breaks
 # =============
 #' @title Find Breaks
-#' @description 
+#' @description TODO
 #' @param x an object inheriting from \code{'data.frame'}.
 #' @param lower_bound a lower bound indicating with which ...
 #' @return Returns an vector containing the column breaks.

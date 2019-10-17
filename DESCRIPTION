@@ -13,5 +13,6 @@ Description: Provides an interface to 'PDFMiner'
     lines. Which makes it the perfect starting point for extracting tables from 
     'PDF'-files.
 Imports: PythonInR, checkmate
+Suggests: miniUI, shiny
 License: GPL-3
 RoxygenNote: 6.1.1

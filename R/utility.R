@@ -89,7 +89,7 @@ plot_boxes <- function(x) {
                 max(x$xend, na.rm = TRUE)), 
             c(  min(x$ystart, na.rm = TRUE), 
                 max(x$yend, na.rm = TRUE)),
-        type = "n", xlab = "", ylab = "", xaxt = "n")
+        type = "n", xlab = "", ylab = "")
 
         graphics::rect(xleft = x$xstart, xright = x$xend, 
         ytop = x$ystart, ybottom = x$yend, border = 1)

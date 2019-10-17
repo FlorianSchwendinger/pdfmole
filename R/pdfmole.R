@@ -195,6 +195,8 @@ df_to_matrix <- function(x) {
     M
 }
 
+#' @noRd
+#' @export
 extract_lines <- function(x) {
     stopifnot(inherits(x, 'pdf_page'))
     stopifnot(length(x$line) > 0)

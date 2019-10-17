@@ -4,7 +4,7 @@
 \alias{align_rows}
 \title{Align Rows}
 \usage{
-align_rows(x, method = c("exact_match", "hclust"), ...)
+align_rows(x, method = c("exact_match", "hclust", "fw"), ...)
 }
 \arguments{
 \item{x}{an object of class \code{pdf\_df}.}

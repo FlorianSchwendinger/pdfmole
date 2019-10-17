@@ -15,5 +15,5 @@ find_breaks(x, lower_bound = 0.25)
 Returns an vector containing the column breaks.
 }
 \description{
-Find Breaks
+TODO
 }
