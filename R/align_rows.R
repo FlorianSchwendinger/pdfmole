@@ -11,13 +11,13 @@
 #' @return Returns a object of class \code{"pdf\_df"}.
 #' @export
 ##  ----------------------------------------------------------------------------
-align_rows <- function(x, method = c("exact_match", "hclust", "fw"), ...) {
+align_rows <- function(x, method = c("exact_match", "hclust", "fixed_width"), ...) {
     method <- match.arg(method)
     kwargs <- list(...)
     switch(method, 
         exact_match = align_rows_exact_match(x, ...),
         hclust = align_rows_hclust(x, ...),
-        fw = align_rows_fixed_width(x, kwargs[["split_points"]]))
+        fixed_width = align_rows_fixed_width(x, kwargs[["split_points"]]))
 }
 
 align_rows_exact_match <- function(x, ...) {

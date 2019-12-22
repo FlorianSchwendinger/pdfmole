@@ -2,7 +2,7 @@ Package: pdfmole
 Type: Package
 Title: Read Tables from 'PDF'-Files
 Version: 1.0
-Authors@R: c(person("Ronald", "Hochreiter", role = "aut"),
+Authors@R: c(person("Ronald", "Hochreiter", role = "ctb"),
              person("Florian", "Schwendinger", role = c("aut", "cre"), email = "FlorianSchwendinger@gmx.at"),
              person("Benjamin", "Schwendinger", role = "aut"))
 Description: Provides an interface to 'PDFMiner'

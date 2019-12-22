@@ -36,6 +36,7 @@ intervalplot.pdf_document <- function(x, by = 0.1, offset = NULL, breaks = 500,
                  to = max(v, na.rm = TRUE), 
                  length.out = grid_len)
     if ( !is.null(widths) ) xgrid <- widths
+    # axis(1, at = xgrid, labels = format(round(xgrid,2)), las = 2)
     axis(1, at = xgrid, labels = format(round(xgrid,0)), las = 2)
     abline(v = xgrid, col = "gray", lty = 5)
     invisible(NULL)

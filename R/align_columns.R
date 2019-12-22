@@ -1,7 +1,7 @@
  
-##  ----------------------------------------------------------------------------
+## ----------------------------------------------------------------------------
 #  align_columns
-# =============
+#  =============
 #' @title Align Columns
 #' @description TODO
 #' @param x an object inheriting from \code{'data.frame'}.
@@ -10,12 +10,12 @@
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
-align_columns <- function(x, method = c("fw", "auto"), ...) {
+align_columns <- function(x, method = c("fixed_width", "auto"), ...) {
     method <- match.arg(method)
     kwargs <- list(...)
     switch(method, 
         auto = align_columns_fixed_width(x, find_breaks(x)),
-        fw = align_columns_fixed_width(x, kwargs[["split_points"]]))
+        fixed_width = align_columns_fixed_width(x, kwargs[["split_points"]]))
 }
 
 align_columns_fixed_width <- function(x, split_points) {
@@ -57,17 +57,17 @@ find_breaks <- function(x, lower_bound = 0.25) {
 #' @title Distributes breaks
 #' @description Distributes equidistantly the given number of columns.
 #' @param x an object inheriting from \code{'data.frame'}.
-#' @param number_cols the nubmer of columns of the document.
+#' @param ncols the nubmer of columns of the document.
 #' @return Returns an vector containing the column breaks.
 #' @export 
 ##  ----------------------------------------------------------------------------
-distribute_breaks <- function(x, number_cols) {
+distribute_breaks <- function(x, ncols) {
     min_x <- min(x$xstart)
     max_x <- max(x$xend)
 
     x_length <- max_x - min_x
 
-    breaks <- round(seq(1, x_length, by = x_length / number_cols))[-1]
+    breaks <- round(seq(1, x_length, by = x_length / ncols))[-1]
     breaks <- breaks + min_x
 
     breaks
