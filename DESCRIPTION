@@ -12,7 +12,7 @@ Description: Provides an interface to 'PDFMiner'
     'PDF'-file, position of the characters, font type, font size, informations about
     lines. Which makes it the perfect starting point for extracting tables from 
     'PDF'-files.
-Imports: PythonInR, checkmate
-Suggests: miniUI, shiny
+Imports: checkmate
+Suggests: pdfminer, miniUI, shiny
 License: GPL-3
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

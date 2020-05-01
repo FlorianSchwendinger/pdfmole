@@ -4,8 +4,15 @@
 \alias{intervalplot}
 \title{Intervalplot}
 \usage{
-intervalplot(x, by = 0.1, offset = NULL, breaks = 500,
-  grid_len = 20, widths = NULL, ...)
+intervalplot(
+  x,
+  by = 0.1,
+  offset = NULL,
+  breaks = 500,
+  grid_len = 20,
+  widths = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an object inheriting from \code{data.frame}.}

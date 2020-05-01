@@ -13,7 +13,7 @@ read_pdf_cars <- function() {
         pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
         pdf
 
-        d <- as.data.frame(pdf)
+        d <- as.data.frame(pdf$text)
         head(d, 20)
         
         d <- group_blocks(d)

@@ -2,7 +2,7 @@
 as_df <- function(x) as.data.frame(x, stringsAsFactors = FALSE)
 
 rm_empty_rows <- function(x) {
-	stopifnot(is.matrix(x) & is.character(x))
+    stopifnot(is.matrix(x) & is.character(x))
     b <- apply(x == "", 1, all)
     x[!b,]
 }
@@ -44,7 +44,7 @@ keep_only_most_common_size <- function(x) {
 }
 
 rm_rows_char_count <- function(x, min_char = 0L, max_char = Inf) {
-    id <- paste(x$page, x$row, sep = "_")
+    id <- paste(x$pid, x$row, sep = "_")
     char_count <- sapply(split(x$text, id), function(x) sum(nchar(x)))
     i <- match(id, names(char_count))
     char_count <- char_count[i]
@@ -80,18 +80,18 @@ rm_char <- function(x, c) {
 }
 
 rm_bound <- function(x, xmin, xmax, ymin, ymax) {
-    x[x$xstart > xmin & x$xend < xmax &
-      x$ystart > ymin & x$yend < ymax,]
+    x[x$x0 > xmin & x$x1 < xmax &
+      x$y0 > ymin & x$y1 < ymax,]
 }
 
 plot_boxes <- function(x) {
-        plot(   c(  min(x$xstart, na.rm = TRUE), 
-                max(x$xend, na.rm = TRUE)), 
-            c(  min(x$ystart, na.rm = TRUE), 
-                max(x$yend, na.rm = TRUE)),
+        plot(   c(  min(x$x0, na.rm = TRUE), 
+                max(x$x1, na.rm = TRUE)), 
+            c(  min(x$y0, na.rm = TRUE), 
+                max(x$y1, na.rm = TRUE)),
         type = "n", xlab = "", ylab = "")
 
-        graphics::rect(xleft = x$xstart, xright = x$xend, 
-        ytop = x$ystart, ybottom = x$yend, border = 1)
+        graphics::rect(xleft = x$x0, xright = x$x1, 
+        ytop = x$y0, ybottom = x$y1, border = 1)
 
 }

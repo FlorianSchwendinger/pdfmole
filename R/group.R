@@ -1,6 +1,6 @@
 
 rm_na <- function(x) {
-    x[!is.na(x$xstart),]
+    x[!is.na(x$x0),]
 }
 
 ##  ----------------------------------------------------------------------------
@@ -20,14 +20,14 @@ group_blocks <- function(x) {
     x <- split(x, x$block)
     group_block <- function(x) {
         if ( nrow(x) == 0L ) return(NULL)
-        if ( length(unique(x$page)) != 1L ) warning("block page is not unique")
+        if ( length(unique(x$pid)) != 1L ) warning("block pid is not unique")
         if ( length(unique(x$font)) != 1L ) warning("block font is not unique")
-        if ( length(unique(x$ystart)) != 1L ) warning("block ystart is not unique")
-        if ( length(unique(x$yend)) != 1L ) warning("block yend is not unique")
+        if ( length(unique(x$y0)) != 1L ) warning("block y0 is not unique")
+        if ( length(unique(x$y1)) != 1L ) warning("block y1 is not unique")
         if ( length(unique(x$size)) != 1L ) warning("block size is not unique")
-        as_df(list(page = x$page[1], text = paste(x$text, collapse = ""),
-                   font = x$font[1], xstart = min(x$xstart), ystart = x$ystart[1], 
-                   xend = max(x$xend), yend = x$yend[1], size = x$size[1]))
+        as_df(list(pid = x$pid[1], text = paste(x$text, collapse = ""),
+                   font = x$font[1], x0 = min(x$x0), y0 = x$y0[1], 
+                   x1 = max(x$x1), y1 = x$y1[1], size = x$size[1]))
     }
     do.call(rbind, lapply(x, group_block))
 }

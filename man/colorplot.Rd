@@ -4,7 +4,7 @@
 \alias{colorplot}
 \title{colorplot}
 \usage{
-colorplot(x, split_points = NULL, page = 0)
+colorplot(x, split_points = NULL, pid = 0)
 }
 \arguments{
 \item{x}{an object inheriting from \code{data.frame}.}
@@ -12,7 +12,7 @@ colorplot(x, split_points = NULL, page = 0)
 \item{split_points}{an vector containing the x-coordinates for splitting
 the page.}
 
-\item{page}{the number of the page which shall be plotted.}
+\item{pid}{the number of the page which shall be plotted.}
 
 \item{...}{additional arguments (currently not used).}
 }
