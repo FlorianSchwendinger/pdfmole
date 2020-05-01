@@ -2,75 +2,49 @@
 
 #
 #
-# intervalplot
+# pixelplot
 #
 #
-
-
-##
-## view_intervals
-##
 
 ##  ----------------------------------------------------------------------------
-#  intervalplot
+#  pixelplot
 #  ============
-#' @title Intervalplot
-#' @description TODO
+#' @title Pixelplot
+#' @description Plot the count of letters 
 #' @param x an object inheriting from \code{data.frame}.
-#' @param by TODO
-#' @param offset TODO
-#' @param breaks TODO
-#' @param grid_len TODO
-#' @param widths TODO
+#' @param scale a double giving the scale factor.
+#' @param pids an integer vector giving the pages to be considered in the pixelplot.
+#' @param las
+#' @param cex.axis
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
-#' @return TODO
 #' @export 
 ##  ----------------------------------------------------------------------------
-intervalplot <- function(x, by = 0.1, offset = NULL, breaks = 500,
-    grid_len = 20, widths = NULL, ...) UseMethod("intervalplot", x)
+pixelplot <- function(x, scale = 1, pids = integer(), las = 2, cex.axis = 0.7, ...) 
+    UseMethod("pixelplot", x)
 
-#' @noRd
-#' @export
-intervalplot.pdf_document <- function(x, by = 0.1, offset = NULL, breaks = 500,
-                                      grid_len = 20, widths = NULL, font = NULL) {
-    x <- rm_na(as.data.frame(x))
-    if ( !is.null(offset) ) x <- x[x[,'y0'] < offset,]
-    if ( !is.null(font) )   x <- x[x$font %in% font, ]
-    v <- as.numeric(unlist(x[, c('x0','x1')]))
-    se <- unlist(mapply(seq, x[, 'x0'], x[, 'x1'],
-                        MoreArgs = list(by = by)))
-    hist(se, breaks = breaks, axes = FALSE, xlab = "", main = "")
-    xgrid <- seq(from = min(v, na.rm = TRUE), 
-                 to = max(v, na.rm = TRUE), 
-                 length.out = grid_len)
-    if ( !is.null(widths) ) xgrid <- widths
-    # axis(1, at = xgrid, labels = format(round(xgrid,2)), las = 2)
-    axis(1, at = xgrid, labels = format(round(xgrid,0)), las = 2)
-    abline(v = xgrid, col = "gray", lty = 5)
-    invisible(NULL)
+pixelplot <- function(x, scale = 1, pids = integer(), las = 2, cex.axis = 0.7, ...) {
+    x <- x[is.finite(x$x0) & is.finite(x$x1),]
+    x <- x[!grepl("^\\s*$", x$text),]
+    if ( length(pids) > 0 ) {
+        x <- x[x$pid %in% pids,]
+    }
+    pixel <- round(unlist(mapply(seq, floor(scale * x$x0), ceiling(scale * x$x1))) / scale)
+    plot(table(pixel), xlab = "x - coordinates", ylab = "count", las = las, cex.axis = cex.axis, ...)
 }
 
-#' @noRd
-#' @export
-intervalplot.pdf_page <- intervalplot.pdf_document
-
-#' @noRd
-#' @export
-intervalplot.data.frame <- intervalplot.pdf_document
-
 
 #
 #
-# colorplot
+# bboxplot
 #
 #
 
 
 ##  ----------------------------------------------------------------------------
-#  colorplot
+#  bboxplot
 #  ============
-#' @title colorplot
+#' @title bboxplot
 #' @description TODO
 #' @param x an object inheriting from \code{data.frame}.
 #' @param split_points an vector containing the x-coordinates for splitting
@@ -81,12 +55,12 @@ intervalplot.data.frame <- intervalplot.pdf_document
 #' @return TODO
 #' @export
 ##  ----------------------------------------------------------------------------
-
-colorplot <- function(x, split_points = NULL, pid = 0) UseMethod("colorplot", x)
+bboxplot <- function(x, split_points = NULL, pid = 1L) 
+    UseMethod("bboxplot", x)
 
 #' @noRd
 #' @export
-colorplot.pdf_document <- function(x, split_points = NULL, pid = 0L, grid_len = 20) {
+bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20) {
     x <- rm_na(as.data.frame(x))
     stopifnot(pid %in% x$pid)
     x <- x[x$pid == pid, ]
@@ -126,10 +100,6 @@ colorplot.pdf_document <- function(x, split_points = NULL, pid = 0L, grid_len = 
     }
 }
 
-#' @noRd
-#' @export
-colorplot.data.frame <- colorplot.pdf_document
-
 
 #
 #
@@ -151,10 +121,12 @@ colorplot.data.frame <- colorplot.pdf_document
 #' @return TODO
 #' @export
 ##  ----------------------------------------------------------------------------
+textplot <- function(x, split_points = NULL, pid = 1L)
+    UseMethod("textplot", x)
 
-textplot <- function(x, split_points = NULL, pid = 0L) UseMethod("textplot", x)
-
-textplot.pdf_document <- function(x, split_points = NULL, pid = 0L) {
+#' @noRd
+#' @export
+textplot.data.frame <- function(x, split_points = NULL, pid = 1L) {
     x <- rm_na(as.data.frame(x))
 
     stopifnot(pid %in% x$pid)
@@ -189,8 +161,3 @@ textplot.pdf_document <- function(x, split_points = NULL, pid = 0L) {
         abline(v = xlines, col = "red", lty = 5)
     }
 }
-
-#' @noRd
-#' @export
-textplot.data.frame <- textplot.pdf_document
-

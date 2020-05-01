@@ -13,6 +13,9 @@ pdf_file <- file.path(pdf_folder, "cars.pdf")
 
 pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
 pdf
+class(pdf)
+
+pdf$meta
 
 d <- pdf$text
 head(d, 20)
@@ -24,10 +27,16 @@ head(d, 20)
 
 d <- align_rows(d)
 head(d, 20)
-
+tail(d)
 
 # plots
-intervalplot(d, 1)
+pixelplot(d, scale = 0.5)
+pixelplot(d, scale = 0.5, 2)
+
+bboxplot(d, pid = 2L)
+
+textplot(d, pid = 1L)
+
 
 
 # alignment

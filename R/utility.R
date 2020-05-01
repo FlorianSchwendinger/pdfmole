@@ -91,7 +91,6 @@ plot_boxes <- function(x) {
                 max(x$y1, na.rm = TRUE)),
         type = "n", xlab = "", ylab = "")
 
-        graphics::rect(xleft = x$x0, xright = x$x1, 
-        ytop = x$y0, ybottom = x$y1, border = 1)
+        graphics::rect(xleft = x$x0, xright = x$x1, ytop = x$y0, ybottom = x$y1, border = 1)
 
 }
