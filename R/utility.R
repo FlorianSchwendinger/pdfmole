@@ -1,4 +1,29 @@
 
+assert_contains_columns <- function(x, columns) {
+    b <- columns %in% colnames(x)
+    if (!all(b)) {
+        plural <- if (sum(!b) == 1L) "" else "s"
+        msg <- sprintf("object does not contain the required column%s %s", 
+            plural, deparse(columns[!b]))
+        stop(msg)
+    }
+}
+
+rm_na <- function(x) {
+    x[!is.na(x$x0),]
+}
+
+
+
+
+
+
+
+
+
+
+
+
 as_df <- function(x) as.data.frame(x, stringsAsFactors = FALSE)
 
 rm_empty_rows <- function(x) {
@@ -56,24 +81,7 @@ keep_only_most_common_font <- function(x) {
     rm_fonts(x, fonts = names(which.max(table(df$font))), invert = TRUE)
 }
 
-strip <- function(x) gsub("(^\\s+|\\s+$)", "", x)
 
-simplify <- function(x, ...) UseMethod("simplify")
-
-simplify.character <- function(x, dec = ".", ...) {
-    y <- strip(x)
-    char_count <- table(unlist(strsplit(y, "", fixed = TRUE)))
-
-    m <- match(names(char_count), c(as.character(0:9), dec))
-
-    if ( anyNA(m) ) {
-        x
-    } else if ( all(m < 10) ) {
-        as.integer(y)
-    } else {
-        as.double(y)
-    }
-}
 
 rm_char <- function(x, c) {
     x[x$text != c,]
@@ -84,13 +92,3 @@ rm_bound <- function(x, xmin, xmax, ymin, ymax) {
       x$y0 > ymin & x$y1 < ymax,]
 }
 
-plot_boxes <- function(x) {
-        plot(   c(  min(x$x0, na.rm = TRUE), 
-                max(x$x1, na.rm = TRUE)), 
-            c(  min(x$y0, na.rm = TRUE), 
-                max(x$y1, na.rm = TRUE)),
-        type = "n", xlab = "", ylab = "")
-
-        graphics::rect(xleft = x$x0, xright = x$x1, ytop = x$y0, ybottom = x$y1, border = 1)
-
-}

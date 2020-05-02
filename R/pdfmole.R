@@ -6,132 +6,109 @@
 # @importFrom intervals
 
 
-##
-## meta is a list with "rotate", "id" and "bbox"
-##
-simplify_list <- function(x) {
-    if ( is.null(x) ) {
-        NULL
-    } else {
-        lapply(x, unlist)
-    }
-}
-
-
-#-- bbox_names <- function() c("x0", "y0", "x1", "y1")
-
-#-- char_names <- function() c("text", "font", bbox_names(), "size")
-
-split_string <- function(x) as.double(unlist(strsplit(x, ",", fixed = TRUE)))
-
-## The input x is an list where each element represents a single character
-## with meta data about the font, position and size in some cases only
-## the character is given (e.g. \n).
-#-- text_to_df <- function(x) {
-#--     char_to_df <- function(text = NA_character_, font = NA_character_, 
-#--         bbox = rep.int(NA_real_, 4), size = NA_real_) {
-#--         y <- c(list(text), font, bbox, size)
-#--         names(y) <- char_names()
-#--         as_df(y)
-#--     }
-#--     do.call(rbind, lapply(x, function(y) do.call(char_to_df, y)))
-#-- }
-
-#-- textbox_to_df <- function(x) {
-#--     box_to_df <- function(wmode = NA_character_, id = NA_real_, bbox = rep.int(NA_real_, 4)) {
-#--         if ( is.character(bbox) ) {
-#--             bbox <- as.double(unlist(strsplit(bbox, ",", fixed = TRUE)))
-#--         }
-#--         names(bbox) <- bbox_names()
-#--         as_df(as.list(c(wmode = wmode, id = id, bbox)))
-#--     }
-#--     do.call(rbind, lapply(x, function(y) do.call(box_to_df, y)))
-#-- }
-
-textline_to_df <- function(x) {
-    to_df <- function(x) {
-        y <- as.list(as.numeric(unlist(strsplit(x$bbox, ",", fixed = TRUE))))
-        names(y) <- bbox_names()
-        as_df(y)
-    }
-    do.call(rbind, lapply(x, to_df))
-}
-
-curve_to_list <- function(x) {
-    to_list <- function(x) {
-        list(linewidth = x$linewidth, pts = split_string(x$pts),
-             bbox = split_string(x$bbox))
-    }
-    lapply(x, to_list)
-}
-
-line_to_list <- function(x) {
-    to_list <- function(x) {
-        list(linewidth = x$linewidth, bbox = split_string(x$bbox))
-    }
-    lapply(x, to_list)
-}
-
-.to_matrix <- function(x, collapse = " ") {
-    nrow <- max(x$row)
-    ncol <- max(x$col)
-    M <- matrix("", nrow, ncol)
-    x <- x[order(x$row, -x$x0, decreasing = TRUE),]
-    for (i in seq_len(nrow)) {
-        m <- which(x$row == i)
-        if ( length(m) ) {
-            tmp <- x[m,]
-            for (j in seq_len(ncol)) {
-                n <- which(tmp$col == j)
-                if ( length(n) ) {
-                    M[i, j] <- paste(tmp[n, "text"], collapse = collapse)
-                }
-            }
-        }
-    }
-    M
-}
-
-to_matrix <- function(x, collapse = " ") {
-    x <- x[order(x$pid),]
-    x <- split(x, x$pid)
-    lapply(x, .to_matrix, collapse = collapse)
-}
-
-df_to_matrix <- function(x) {
-    urow <- sort(unique(x$row))
-    ucol <- sort(unique(x$col))
-    M <- matrix("", length(urow), length(ucol))
-
-    x <- x[order(x$y0, -x$x0, decreasing = TRUE),]
-    for ( i in seq_along(urow) ) {
-        bi <- x$row == urow[i]
-        for ( j in seq_along(ucol) ) {
-            bj <- x$col == ucol[j]
-            rec <- x[(bi & bj), ]
-            if ( nrow(rec) > 0 ) {
-                M[i, j] <- paste(rec$text, collapse=" ")
-            }
-        }
-    }
-    rownames(M) <- urow
-    M
-}
-
-#' @noRd
 #' @export
-extract_lines <- function(x) {
-    stopifnot(inherits(x, 'pdf_page'))
-    stopifnot(length(x$line) > 0)
+#' @noRd
+mole  <- function(x, header = FALSE, simplify = FALSE, keep = FALSE) {
+    pdfmole:::assert_contains_columns(x, c("pid", "row", "col", "text"))
+    if (!isTRUE(attr(x, "ordered"))) {
+        x <- x[with(x, order(pid, row, col)),]
+    }
 
-    res <- as.data.frame(do.call(rbind, simplify_list(x$line)))
-    colnames(res) <- c('linewidth', 'x0', 'y0', 'x1', 'y1')
+    b <- !duplicated(x[c("pid", "row")])
+    x$rowid <- cumsum(b)
+    nrows <- tail(x$rowid, 1)
+    ncolumns <- max(x$col)
+    col_names <- character(ncolumns)
+    
+    d <- lapply(rep.int(nrows, ncolumns), character)
+    for (i in seq_len(ncolumns)) {
+        y <- x[which(x$col == i),]
+        d[[i]][y$rowid] <- y$text
+        if ( header & (nrows > 0) ) {
+            col_names[i] <- d[[i]][1L]
+            if ( simplify ) {
+                d[[i]] <- simplify(d[[i]][-1L])
+            } else {
+                d[[i]] <- d[[i]][-1L]
+            }
+        }
+    }
 
-    res$horizontal <- FALSE
-    res$vertical <- FALSE
+    if (keep) {
+        d[[length(d) + 1L]] <- x[b, "row"]
+        d[[length(d) + 1L]] <- x[b, "pid"]
+        col_names <- make.names(c(col_names, "row", "pid"), unique = TRUE)
+        j <- seq(length(d) - 1L, length(d))
+        names(d) <- rep.int("", length(d))
+        names(d)[j] <- col_names[j]
+    }
 
-    res$horizontal[(res$y1 - res$y0) < 0.05] <- TRUE
-    res$vertical[(res$x1 - res$x0) < 0.05] <- TRUE
+    if (header) {
+        names(d) <- col_names
+        b <- nchar(names(d)) == 0
+        names(d)[b] <- sprintf("X%i", seq_along(d))[b]
+    }
 
-    res
+    class(d) <- "mole"
+    d
 }
+
+
+#' @export
+#' @noRd
+as.matrix.mole <- function(x, ...) do.call(cbind, x)
+
+
+#' @export
+#' @noRd
+as.data.frame.mole <- function(x, ...) {
+    class(x) <- "list"
+    if ( isTRUE(list(...)$stringsAsFactors) ) {
+        as.data.frame(x, ...)
+    } else {
+        as.data.frame(x, stringsAsFactors = FALSE)
+    }
+}
+
+
+cutoff_text <- function(x, nc = 10L) {
+    y <- sprintf("%s ~", substr(x, 1, nc - 2L))
+    format_1 <- sprintf("%%-%is", nc)
+    ifelse(nchar(x) <= nc , sprintf(format_1, x), y)
+}
+
+
+#' @export
+#' @noRd
+print.mole <- function(x, hide = TRUE, ...) {
+    ncolumns <- length(x)
+    nrows <- length(x[[1L]])
+    nchar_header <- if (is.null(names(x))) double(ncolumns) else nchar(names(x))
+    nchar_body <- sapply(x, function(y) max(nchar(y)))
+    nchar_max <- pmax(nchar_header, nchar_body)
+    x <- lapply(x, as.character)
+    nprint <- 30L
+    nhead <- ntail <- 6L
+    nbody <- nprint - nhead - ntail
+    max_col_width <- 10L
+    if ( nrows > nprint ) {
+        i <- c(seq_len(nhead), sort(sample(seq(nhead + 1L, nrows - ntail), nbody)),
+               seq(nrows - ntail + 1L, nrows))
+        for (j in seq_along(x)) {
+            x[[j]] <- x[[j]][i]
+            x[[j]][nhead + 1L] <- "..."
+            x[[j]][nprint - ntail] <- "..."
+        }
+    }
+
+    for (j in seq_along(x)) {
+        if ( nchar_max[j] > max_col_width ) {
+            x[[j]] <- cutoff_text(x[[j]])
+        }
+        fmt <- sprintf("%%-%is", max(nchar(x[[j]])) + 2)
+        x[[j]] <- sprintf(fmt, x[[j]])
+    }
+    
+    writeLines(do.call(paste0, x))
+}
+

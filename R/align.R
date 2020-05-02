@@ -1,10 +1,3 @@
-#
-# 
-#   align rows
-#
-#
-
-
 ##  ----------------------------------------------------------------------------
 #  align_rows
 #  ==========
@@ -26,11 +19,12 @@ align_rows <- function(x, method = c("exact_match", "hclust", "fixed_width"), ..
         fixed_width = align_rows_fixed_width(x, kwargs[["split_points"]]))
 }
 
+
 align_rows_exact_match <- function(x, ...) {
     x$row <- match(x$y0, sort(unique(x$y0), decreasing = TRUE))
-    
     x
 }
+
 
 align_rows_hclust <- function(x, ...) {
     kwargs <- list(...)
@@ -47,12 +41,12 @@ align_rows_hclust <- function(x, ...) {
         x$row[b] <- .align_rows_hclust(x[b,], h = kwargs$h)
     }
 
-    ## reorder
     x <- x[order(x$y0, decreasing = TRUE),]
     x$row <- match(x$row, unique(x$row))
     
     x
 }
+
 
 align_rows_fixed_width <- function(x, split_points) {
     x$row <- NA_integer_
@@ -67,13 +61,7 @@ align_rows_fixed_width <- function(x, split_points) {
 }
 
 
-#
-# 
-#   align columns
-#
-#
 
- 
 ## ----------------------------------------------------------------------------
 #  align_columns
 #  =============
@@ -93,6 +81,7 @@ align_columns <- function(x, method = c("fixed_width", "auto"), ...) {
         fixed_width = align_columns_fixed_width(x, kwargs[["split_points"]]))
 }
 
+
 align_columns_fixed_width <- function(x, split_points) {
     x$col <- NA_integer_
     xmean <- rowMeans(x[, c("x0", "x1")])
@@ -103,6 +92,7 @@ align_columns_fixed_width <- function(x, split_points) {
     
     x
 }
+
 
 ##  ----------------------------------------------------------------------------
 #  find_breaks
@@ -124,122 +114,5 @@ find_breaks <- function(x, lower_bound = 0.25) {
     # breaks <- head(tail(h$breaks, -1)[b], -1)
     breaks <- tail(h$breaks, -1)[b]
     breaks
-}
-
-##  ----------------------------------------------------------------------------
-#  distribute_breaks
-# =============
-#' @title Distributes breaks
-#' @description Distributes equidistantly the given number of columns.
-#' @param x an object inheriting from \code{'data.frame'}.
-#' @param ncols the nubmer of columns of the document.
-#' @return Returns an vector containing the column breaks.
-#' @export 
-##  ----------------------------------------------------------------------------
-distribute_breaks <- function(x, ncols) {
-    min_x <- min(x$x0)
-    max_x <- max(x$x1)
-
-    x_length <- max_x - min_x
-
-    breaks <- round(seq(1, x_length, by = x_length / ncols))[-1]
-    breaks <- breaks + min_x
-
-    breaks
-}
-
-
-#
-# 
-#   align lines
-#
-#
-
-
-lead <- function(x, na = NA) c(tail(x, -1), na)
-
-
-##  ----------------------------------------------------------------------------
-#  align_hlines
-#  ==========
-#' @title Align horizontal lines
-#' @description Align the horizontal lines of a dataframe.
-#' @param x an object of class dataframe.
-#' @param tol a threshold of how many distance can be between line segments
-#' which should still be handled as connected.
-#' @param ... additional arguments
-#' @details Some details to be written.
-#' @return Returns a df where all horizontal line segments
-#' with connecting end and start point are concatened.
-#' @export
-##  ----------------------------------------------------------------------------
-align_hlines <- function(x, tol = 1) {
-    hl <- x[x$horizontal, ]
-    hl <- hl[order(hl$y0, hl$x0), ]
-
-    same_row <- (abs(hl$y0 - lead(hl$y0)) < tol)
-    same_end <- (abs(hl$x1 - lead(hl$x0)) < tol)
-    
-    same_group <- (same_row & same_end)
-
-    hl$group <- c(1, head(cumsum(!same_group) + 1, -1))
-
-    cl <- hl[, list(first(linewidth), first(x0), first(y0), last(x1), 
-            first(y1), first(horizontal), first(vertical)), group]
-    cl[, group := NULL]
-    colnames(cl) <- colnames(x)
-    
-    cl
-}
-
-##  ----------------------------------------------------------------------------
-#  align_vlines
-#  ==========
-#' @title Align vertical lines
-#' @description Align the vertical lines of a dataframe.
-#' @param x an object of class dataframe.
-#' @param tol a threshold of how many distance can be between line segments
-#' which should still be handled as connected.
-#' @param ... additional arguments
-#' @details Some details to be written.
-#' @return Returns a df where all horizontal line segments
-#' with connecting end and start point are concatened.
-#' @export
-##  ----------------------------------------------------------------------------
-align_vlines <- function(x, tol = 1) {
-    vl <- x[x$vertical, ]
-    vl <- vl[order(vl$x0, vl$y0), ]
-
-    same_col <- (abs(vl$x0 - lead(vl$x0)) < tol)
-    same_end <- (abs(vl$y1 - lead(vl$y0)) < tol)
-    
-    same_group <- (same_col & same_end)
-
-    vl$group <- c(1, head(cumsum(!same_group) + 1, -1))
-
-    cl <- vl[, list(first(linewidth), first(x0), first(y0), first(x1), 
-            last(y1), first(horizontal), first(vertical)), group]
-    cl[, group := NULL]
-    colnames(cl) <- colnames(x)
-    
-    cl
-}
-
-##  ----------------------------------------------------------------------------
-#  align_lines
-#  ==========
-#' @title Align all lines
-#' @description Align the all (horizontal + vertical) lines of a dataframe.
-#' @param x an object of class dataframe.
-#' @param tol a threshold of how many distance can be between line segments
-#' which should still be handled as connected.
-#' @param ... additional arguments
-#' @details Some details to be written.
-#' @return Returns a df where all line segments (which belong to the same
-#' horizontal or vertical) with connecting end and start point are concatened.
-#' @export
-##  ----------------------------------------------------------------------------
-align_lines <- function(x) {
-    rbind(align_hlines(x), align_vlines(x))
 }
 

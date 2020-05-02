@@ -4,7 +4,7 @@
 \alias{textplot}
 \title{textplot}
 \usage{
-textplot(x, split_points = NULL, pid = 0L)
+textplot(x, split_points = NULL, pid = 1L)
 }
 \arguments{
 \item{x}{an object inheriting from \code{data.frame}.}

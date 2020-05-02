@@ -13,6 +13,6 @@ Description: Provides an interface to 'PDFMiner'
     lines. Which makes it the perfect starting point for extracting tables from 
     'PDF'-files.
 Imports: checkmate
-Suggests: pdfminer, miniUI, shiny
+Suggests: pdfminer
 License: GPL-3
 RoxygenNote: 7.1.0
