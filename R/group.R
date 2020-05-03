@@ -1,4 +1,30 @@
 
+# returns the first element of a vector with block specific warning
+block_first <- function(key, val) {
+    if ( length(unique(val)) != 1L ) {
+        warning("'%s' contains blocks that are not unique", key)
+    }
+    head(val, 1)
+}
+
+unify_blocks <- function(x) {
+    x$block <- NULL
+    if ( nrow(x) == 1L ) {
+        return(x)
+    }
+    y <- setNames(vector("list", ncol(x)), colnames(x))
+    for ( i in seq_along(x) ) {
+        k <- colnames(x)[i]
+        unifun <- switch(k,
+            block_first,
+            x0 = function(key, val) min(val, na.rm = TRUE),
+            x1 = function(key, val) max(val, na.rm = TRUE),
+            text = function(key, val) paste(val, collapse = ""))
+        y[[i]] <- unifun(k, x[[i]])
+    }
+    return(as.data.frame(y, stringsAsFactors = FALSE))
+}
+
 ##  ----------------------------------------------------------------------------
 #  group_blocks
 #  ============
@@ -8,27 +34,15 @@
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
-## NOTE: check if the stuff has also to be ordered!!
-group_blocks <- function(x) {
-    assert_contains_columns(x, c("pid", "x0", "x1", "y0", "y1", "text", "block", ""))
+group_blocks  <- function(x) {
+    assert_contains_columns(x, c("block"))
     
-    x <- rm_na(x)
-    x <- split(x, x$block)
-    group_block <- function(x) {
-        if ( nrow(x) == 0L ) return(NULL)
-        if ( length(unique(x$pid)) != 1L ) warning("block pid is not unique")
-        if ( length(unique(x$font)) != 1L ) warning("block font is not unique")
-        if ( length(unique(x$y0)) != 1L ) warning("block y0 is not unique")
-        if ( length(unique(x$y1)) != 1L ) warning("block y1 is not unique")
-        if ( length(unique(x$size)) != 1L ) warning("block size is not unique")
-        data.frame(pid = x$pid[1], text = paste(x$text, collapse = ""),
-                   font = x$font[1], x0 = min(x$x0), y0 = x$y0[1], 
-                   x1 = max(x$x1), y1 = x$y1[1], size = x$size[1], 
-                   stringsAsFactors = FALSE)
-    }
-    do.call(rbind, lapply(x, group_block))
+    x <- x[order(x$block, x$x0),]
+    x <- split(x, x$block) # the split drops the NA values
+    x <- lapply(x, unify_blocks)
+    x$stringsAsFactors <- FALSE
+    do.call(rbind.data.frame, x)
 }
-
 
 ##  ----------------------------------------------------------------------------
 #  group_columns

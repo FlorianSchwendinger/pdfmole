@@ -3,6 +3,7 @@
 S3method(as.data.frame,mole)
 S3method(as.matrix,mole)
 S3method(bboxplot,data.frame)
+S3method(pixelplot,data.frame)
 S3method(print,mole)
 S3method(simplify,character)
 S3method(textplot,data.frame)

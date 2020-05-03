@@ -90,7 +90,7 @@ print.mole <- function(x, hide = TRUE, ...) {
     nprint <- 30L
     nhead <- ntail <- 6L
     nbody <- nprint - nhead - ntail
-    max_col_width <- 10L
+    max_col_width <- 8L
     if ( nrows > nprint ) {
         i <- c(seq_len(nhead), sort(sample(seq(nhead + 1L, nrows - ntail), nbody)),
                seq(nrows - ntail + 1L, nrows))
@@ -101,14 +101,19 @@ print.mole <- function(x, hide = TRUE, ...) {
         }
     }
 
+    do_cutoff <- sum(nchar_max) + 2 * length(nchar_max) >  unlist(options("width"))
     for (j in seq_along(x)) {
-        if ( nchar_max[j] > max_col_width ) {
-            x[[j]] <- cutoff_text(x[[j]])
+        if ( !is.null(names(x)) ) {
+                x[[j]] <- c(names(x)[j], x[[j]])
+        }
+        if ( (nchar_max[j] > max_col_width) &  do_cutoff ) {
+            x[[j]] <- cutoff_text(x[[j]], max_col_width)
         }
         fmt <- sprintf("%%-%is", max(nchar(x[[j]])) + 2)
         x[[j]] <- sprintf(fmt, x[[j]])
     }
     
-    writeLines(do.call(paste0, x))
+    txt <- do.call(paste0, x)
+    writeLines(txt)
 }
 

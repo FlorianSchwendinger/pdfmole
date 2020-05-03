@@ -18,6 +18,8 @@
 pixelplot <- function(x, scale = 1, pids = integer(), las = 2, cex.axis = 0.7, ...) 
     UseMethod("pixelplot", x)
 
+#' @noRd
+#' @export
 pixelplot.data.frame <- function(x, scale = 1, pids = integer(), las = 2, cex.axis = 0.7, ...) {
     assert_contains_columns(x, c("pid", "text", "x0", "x1"))
     x <- x[is.finite(x$x0) & is.finite(x$x1),]
