@@ -4,7 +4,7 @@
 \alias{group_blocks}
 \title{Group Blocks}
 \usage{
-group_blocks(x)
+group_blocks(x, collapse = "")
 }
 \arguments{
 \item{x}{an object inheriting from \code{'data.frame'}.}

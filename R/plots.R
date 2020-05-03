@@ -46,12 +46,12 @@ pixelplot.data.frame <- function(x, scale = 1, pids = integer(), las = 2, cex.ax
 #' @return TODO
 #' @export
 ##  ----------------------------------------------------------------------------
-bboxplot <- function(x, split_points = NULL, pid = 1L) 
+bboxplot <- function(x, split_points = NULL, pid = 1L, ...) 
     UseMethod("bboxplot", x)
 
 #' @noRd
 #' @export
-bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20) {
+bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20, ...) {
     assert_contains_columns(x, c("pid", "x0", "x1", "y0", "y1"))
     x <- rm_na(x)
     x <- x[x$pid == pid, ]
@@ -63,8 +63,7 @@ bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20)
 
     plot(c(min(x$x0, na.rm = TRUE), max(x$x1, na.rm = TRUE)), 
          c(min(x$y0, na.rm = TRUE), max(x$y1, na.rm = TRUE)),
-         type = "n", xlab = "", ylab = "", xaxt = "n",
-         main = sprintf("Page %d", pid))
+         type = "n", xlab = "", ylab = "", xaxt = "n", ...)
 
     graphics::rect(xleft = x$x0, xright = x$x1, ytop = x$y0, ybottom = x$y1, 
                    border = x$col + 1)
@@ -95,12 +94,12 @@ bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20)
 #' @return TODO
 #' @export
 ##  ----------------------------------------------------------------------------
-textplot <- function(x, split_points = NULL, pid = 1L)
+textplot <- function(x, split_points = NULL, pid = 1L, ...)
     UseMethod("textplot", x)
 
 #' @noRd
 #' @export
-textplot.data.frame <- function(x, split_points = NULL, pid = 1L) {
+textplot.data.frame <- function(x, split_points = NULL, pid = 1L, ...) {
     assert_contains_columns(x, c("pid", "text", "x0", "x1", "y0", "y1"))
     x <- rm_na(x)
     x <- x[x$pid == pid, ]
@@ -108,8 +107,7 @@ textplot.data.frame <- function(x, split_points = NULL, pid = 1L) {
 
     plot(c(min(x$x0, na.rm = TRUE), max(x$x1, na.rm = TRUE)), 
          c(min(x$y0, na.rm = TRUE), max(x$y1, na.rm = TRUE)),
-         type = "n", xlab = "", ylab = "", xaxt = "n",
-         main = sprintf("Page %d", pid))
+         type = "n", xlab = "", ylab = "", xaxt = "n", ...)
 
     graphics::text((x$x0 + x$x1) / 2, (x$y0+ x$y1) / 2, x$text, cex = 0.8)
 

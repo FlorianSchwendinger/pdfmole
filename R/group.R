@@ -7,7 +7,7 @@ block_first <- function(key, val) {
     head(val, 1)
 }
 
-unify_blocks <- function(x) {
+unify_blocks <- function(x, collapse = "") {
     x$block <- NULL
     if ( nrow(x) == 1L ) {
         return(x)
@@ -19,7 +19,7 @@ unify_blocks <- function(x) {
             block_first,
             x0 = function(key, val) min(val, na.rm = TRUE),
             x1 = function(key, val) max(val, na.rm = TRUE),
-            text = function(key, val) paste(val, collapse = ""))
+            text = function(key, val) paste(val, collapse = collapse))
         y[[i]] <- unifun(k, x[[i]])
     }
     return(as.data.frame(y, stringsAsFactors = FALSE))
@@ -34,12 +34,12 @@ unify_blocks <- function(x) {
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
-group_blocks  <- function(x) {
+group_blocks  <- function(x, collapse = "") {
     assert_contains_columns(x, c("block"))
-    
+
     x <- x[order(x$block, x$x0),]
     x <- split(x, x$block) # the split drops the NA values
-    x <- lapply(x, unify_blocks)
+    x <- lapply(x, unify_blocks, collapse = collapse)
     x$stringsAsFactors <- FALSE
     do.call(rbind.data.frame, x)
 }

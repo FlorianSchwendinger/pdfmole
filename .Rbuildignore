@@ -1,9 +1,3 @@
-TODO
-work
-R/dev
-testMole.R
-Makefile
-
-
-^.*\.Rproj$
-^\.Rproj\.user$
+agstat.pdf
+column_span_1.pdf
+vnalf2011graz.pdf
