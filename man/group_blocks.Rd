@@ -8,6 +8,8 @@ group_blocks(x, collapse = "")
 }
 \arguments{
 \item{x}{an object inheriting from \code{'data.frame'}.}
+
+\item{collapse}{a character string}
 }
 \value{
 Returns an object inheriting from \code{'data.frame'}.

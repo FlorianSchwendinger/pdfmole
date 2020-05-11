@@ -31,8 +31,15 @@ guess_class <- function(x) {
 }
 
 
-#' @export
-#' @noRd
+##  ----------------------------------------------------------------------------
+#  simplify
+#  ====
+#' @title TODO
+#' @description TODO
+#' @param x an 
+#' @param ... optional arguments
+#' @export 
+##  ----------------------------------------------------------------------------
 simplify <- function(x, ...) UseMethod("simplify", x)
 
 

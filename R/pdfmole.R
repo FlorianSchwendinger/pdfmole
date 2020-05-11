@@ -6,8 +6,17 @@
 # @importFrom intervals
 
 
-#' @export
-#' @noRd
+##  ----------------------------------------------------------------------------
+#  mole
+#  ====
+#' @title TODO
+#' @description TODO
+#' @param x an object inheriting from \code{data.frame}.
+#' @param header a logical
+#' @param simplify a logical
+#' @param keep a logical
+#' @export 
+##  ----------------------------------------------------------------------------
 mole  <- function(x, header = FALSE, simplify = FALSE, keep = FALSE) {
     assert_contains_columns(x, c("pid", "row", "col", "text"))
     if (!isTRUE(attr(x, "ordered"))) {

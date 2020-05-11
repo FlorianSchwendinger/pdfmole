@@ -31,6 +31,7 @@ unify_blocks <- function(x, collapse = "") {
 #' @title Group Blocks
 #' @description TODO
 #' @param x an object inheriting from \code{'data.frame'}.
+#' @param collapse a character string
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
@@ -50,6 +51,7 @@ group_blocks  <- function(x, collapse = "") {
 #' @title Group Columns
 #' @description TODO
 #' @param x an object inheriting from \code{'data.frame'}.
+#' @param collapse a character string
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------

@@ -9,8 +9,8 @@
 #' @param x an object inheriting from \code{data.frame}.
 #' @param scale a double giving the scale factor.
 #' @param pids an integer vector giving the pages to be considered in the pixelplot.
-#' @param las
-#' @param cex.axis
+#' @param las TODO
+#' @param cex.axis TODO
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
 #' @export 
