@@ -1,6 +1,6 @@
 #' @importFrom checkmate assert check_file_exists check_directory_exists check_integerish check_character check_logical
-#' @importFrom graphics abline axis hist
-#' @importFrom stats cutree df dist hclust quantile
+#' @importFrom graphics abline axis hist plot
+#' @importFrom stats cutree df dist hclust quantile aggregate setNames
 #' @importFrom utils download.file head tail unzip
 
 # @importFrom intervals
@@ -9,7 +9,7 @@
 #' @export
 #' @noRd
 mole  <- function(x, header = FALSE, simplify = FALSE, keep = FALSE) {
-    pdfmole:::assert_contains_columns(x, c("pid", "row", "col", "text"))
+    assert_contains_columns(x, c("pid", "row", "col", "text"))
     if (!isTRUE(attr(x, "ordered"))) {
         x <- x[with(x, order(pid, row, col)),]
     }
