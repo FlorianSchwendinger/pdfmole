@@ -109,7 +109,8 @@ textplot.data.frame <- function(x, split_points = NULL, pid = 1L, ...) {
          c(min(x$y0, na.rm = TRUE), max(x$y1, na.rm = TRUE)),
          type = "n", xlab = "", ylab = "", xaxt = "n", ...)
 
-    graphics::text((x$x0 + x$x1) / 2, (x$y0+ x$y1) / 2, x$text, cex = 0.8)
+    graphics::text((x$x0 + x$x1) / 2, (x$y0+ x$y1) / 2, x$text, cex = 0.8,
+        adj = c(0.5, 0.5))
 
     xgrid <- seq(from = min(v, na.rm = TRUE), to = max(v, na.rm = TRUE), by = 20)
     xlines <- seq(from = min(v, na.rm = TRUE), to = max(v, na.rm = TRUE), by = 10)
