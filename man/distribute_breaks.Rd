@@ -4,12 +4,12 @@
 \alias{distribute_breaks}
 \title{Distributes breaks}
 \usage{
-distribute_breaks(x, number_cols)
+distribute_breaks(x, ncols)
 }
 \arguments{
 \item{x}{an object inheriting from \code{'data.frame'}.}
 
-\item{number_cols}{the nubmer of columns of the document.}
+\item{ncols}{the nubmer of columns of the document.}
 }
 \value{
 Returns an vector containing the column breaks.

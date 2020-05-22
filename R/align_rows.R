@@ -21,7 +21,7 @@ align_rows <- function(x, method = c("exact_match", "hclust", "fixed_width"), ..
 }
 
 align_rows_exact_match <- function(x, ...) {
-    x$row <- match(x$ystart, sort(unique(x$ystart), decreasing = TRUE))
+    x$row <- match(x$y0, sort(unique(x$y0), decreasing = TRUE))
     
     x
 }
@@ -29,20 +29,20 @@ align_rows_exact_match <- function(x, ...) {
 align_rows_hclust <- function(x, ...) {
     kwargs <- list(...)
     .align_rows_hclust <- function(x, h) {
-        ymean <- x$yend + x$ystart / 2
+        ymean <- x$y1 + x$y0 / 2
         distance_matrix <- dist(ymean)
         hierarchical_cluster <- hclust(distance_matrix, method = "single")
-        cut_height <- if ( is.null(h) ) min(x$yend - x$ystart) else h
+        cut_height <- if ( is.null(h) ) min(x$y1 - x$y0) else h
         cutree(hierarchical_cluster, h = cut_height)
     }
     x$row <- NA_integer_
-    for ( i in unique(x$page) ) {
-        b <- (x$page == i)
+    for ( i in unique(x$pid) ) {
+        b <- (x$pid == i)
         x$row[b] <- .align_rows_hclust(x[b,], h = kwargs$h)
     }
 
     ## reorder
-    x <- x[order(x$ystart, decreasing = TRUE),]
+    x <- x[order(x$y0, decreasing = TRUE),]
     x$row <- match(x$row, unique(x$row))
     
     x
@@ -50,7 +50,7 @@ align_rows_hclust <- function(x, ...) {
 
 align_rows_fixed_width <- function(x, split_points) {
     x$row <- NA_integer_
-    xmean <- rowMeans(x[, c("ystart", "yend")])
+    xmean <- rowMeans(x[, c("y0", "y1")])
     for ( i in seq_along(split_points) ) {
         x$row[is.na(x$row) & (xmean < split_points[i])] <- i
     }

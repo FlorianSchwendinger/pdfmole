@@ -15,26 +15,26 @@
 #' @export
 ##  ----------------------------------------------------------------------------
 
-textplot <- function(x, split_points = NULL, page = 0L) UseMethod("textplot", x)
+textplot <- function(x, split_points = NULL, page = 1L, ...) UseMethod("textplot", x)
 
-textplot.pdf_document <- function(x, split_points = NULL, page = 0L) {
+textplot.pdf_document <- function(x, split_points = NULL, page = 1L, ...) {
 	x <- rm_na(as.data.frame(x))
 
-	stopifnot(page %in% x$page)
-	x <- x[x$page == page, ]
+	stopifnot(page %in% x$pid)
+	x <- x[x$pid == page, ]
 	
-	stopifnot(any(c("xstart", "xend", "ystart", "yend") %in% colnames(x)))
-	v <- as.numeric(unlist(x[, c('xstart','xend')]))
+	stopifnot(any(c("x0", "x1", "y0", "y1") %in% colnames(x)))
+	v <- as.numeric(unlist(x[, c('x0','x1')]))
 
-	plot(	c(	min(x$xstart, na.rm = TRUE), 
-				max(x$xend, na.rm = TRUE)), 
-			c(	min(x$ystart, na.rm = TRUE), 
-				max(x$yend, na.rm = TRUE)),
+	graphics::plot(c(min(x$x0, na.rm = TRUE), 
+			  		 max(x$x1, na.rm = TRUE)), 
+				   c(min(x$y0, na.rm = TRUE), 
+			  		 max(x$y1, na.rm = TRUE)),
 		type = "n", xlab = "", ylab = "", xaxt = "n",
 		main = sprintf("Page %d", page))
 
-  	graphics::text((x$xstart + x$xend)/2, 
-  				   (x$ystart+ x$yend)/2,
+  	graphics::text((x$x0 + x$x1)/2, 
+  				   (x$y0+ x$y1)/2,
   				   x$text, cex = 0.8)
 
 	xgrid <- seq(from = min(v, na.rm = TRUE), 

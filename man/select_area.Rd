@@ -4,7 +4,7 @@
 \alias{select_area}
 \title{select_area}
 \usage{
-select_area(x)
+select_area(x, ...)
 }
 \arguments{
 \item{x}{an object inheriting from \code{data.frame}.}
@@ -16,7 +16,7 @@ TODO
 }
 \description{
 A function creating a shiny miniUI for select the coordinates
-for \code{\link{rm_bound}}.
+for \code{\link{select_bounds}}.
 }
 \details{
 Some details to be written.

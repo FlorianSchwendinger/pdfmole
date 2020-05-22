@@ -79,19 +79,35 @@ rm_char <- function(x, c) {
     x[x$text != c,]
 }
 
-rm_bound <- function(x, xmin, xmax, ymin, ymax) {
-    x[x$xstart > xmin & x$xend < xmax &
-      x$ystart > ymin & x$yend < ymax,]
+##  ----------------------------------------------------------------------------
+#  select_bounds
+#  ============
+#' @title select_bounds
+#' @description TODO
+#' @param x an object inheriting from \code{data.frame}.
+#' @param bounds a vector containing bounds for x0, x1, y0 and y1.
+#' @details Some details to be written.
+#' @return TODO
+#' @export 
+##  ----------------------------------------------------------------------------
+select_bounds <- function(x, bounds) {
+    if (length(bounds) != 4 | !is.numeric(bounds)) {
+        stop("Invalid bounds.")
+    }
+
+    x[x$x0 > bounds[1] & x$x1 < bounds[2] &
+      x$y0 > bounds[3] & x$y1 < bounds[4],]
+
 }
 
 plot_boxes <- function(x) {
-        plot(   c(  min(x$xstart, na.rm = TRUE), 
-                max(x$xend, na.rm = TRUE)), 
-            c(  min(x$ystart, na.rm = TRUE), 
-                max(x$yend, na.rm = TRUE)),
+        graphics::plot(   c(  min(x$x0, na.rm = TRUE), 
+                max(x$x1, na.rm = TRUE)), 
+            c(  min(x$y0, na.rm = TRUE), 
+                max(x$y1, na.rm = TRUE)),
         type = "n", xlab = "", ylab = "")
 
-        graphics::rect(xleft = x$xstart, xright = x$xend, 
-        ytop = x$ystart, ybottom = x$yend, border = 1)
+        graphics::rect(xleft = x$x0, xright = x$x1, 
+        ytop = x$y0, ybottom = x$y1, border = 1)
 
 }

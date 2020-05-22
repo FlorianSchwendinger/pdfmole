@@ -4,7 +4,7 @@
 \alias{align_vlines}
 \title{Align vertical lines}
 \usage{
-align_vlines(x, tol = 1)
+align_vlines(x, tol = 1, ...)
 }
 \arguments{
 \item{x}{an object of class dataframe.}
@@ -12,10 +12,10 @@ align_vlines(x, tol = 1)
 \item{tol}{a threshold of how many distance can be between line segments
 which should still be handled as connected.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments (currently not used).}
 }
 \value{
-Returns a df where all horizontal line segments
+Returns a df where all vertical line segments
 with connecting end and start point are concatened.
 }
 \description{

@@ -1,5 +1,3 @@
-#' @importFrom PythonInR pyExec pyExecfile pyCall
-#' @importFrom checkmate assert check_file_exists check_directory_exists check_integerish check_character check_logical
 #' @importFrom graphics abline axis hist
 #' @importFrom stats cutree df dist hclust quantile
 #' @importFrom utils download.file head tail unzip
@@ -19,7 +17,7 @@ simplify_list <- function(x) {
 }
 
 
-bbox_names <- function() c("xstart", "ystart", "xend", "yend")
+bbox_names <- function() c("x0", "y0", "x1", "y1")
 
 char_names <- function() c("text", "font", bbox_names(), "size")
 
@@ -103,57 +101,11 @@ to_pdf_document <- function(x) {
     doc
 }
 
-#  ---------------------------------------------------------
-#  read.pdf
-#  ========
-#' @title Read a \code{PDF} document.
-#' @description Extract  \code{PDF} document
-#' @param file a character giving the name of the \code{PDF}-file the data are to be read from.
-#' @param pages an integer giving the pages pages which should be extracted.
-#' @param encoding a character string giving the encoding of the output.
-#' @param maxpages an integer giving the maximum number of pages to be extracted.
-#' @param check_extractable a logical indicating if a check should be performend
-#'        to verify that the text is extractable.
-#' @param password a character string giving the password necessary to access the \code{PDF}.
-#' @param caching a logical if \code{TRUE} \pkg{pdfmole} is faster but uses more memory.
-#' @param layout_page_number an integer giving number of the page where the layout
-#'        analysis should be performed.
-# @examples
-# ifi <- system.file("pdfs/cars.pdf", package = "pdfmole")
-# read.pdf(ifi)
-# as.data.frame(read.pdf(ifi))
-#
-#' @return Returns a object of class \code{"pdf_document"}.
-#'         A object of class \code{"pdf_document"} is a list where
-#'         each element of the list is an object of class \code{"pdf_page"}.
-#' @export
-##  ---------------------------------------------------------
-read.pdf <- function(file, pages = integer(), encoding = 'utf8', maxpages = Inf,
-                     check_extractable = TRUE, password = '', caching = TRUE, 
-                     layout_page_number = 1L) {
-
-    if (is.infinite(maxpages)) maxpages <- 0L
-
-    assert(check_file_exists(file), check_integerish(pages), 
-           check_character(encoding), check_integerish(maxpages), 
-           check_logical(check_extractable), check_character(password),
-           check_logical(caching), check_integerish(layout_page_number))
-
-    ## prepare kwargs
-    kwargs <- list(path = file, pagenos = as.list(pages - 1L), codec = encoding,
-                   maxpages = maxpages, check_extractable = check_extractable,
-                   password = password, caching = caching, 
-                   pageno = layout_page_number - 1L)
-
-    doc <- pyCall("pdf2list", kwargs = kwargs, simplify = FALSE)
-    to_pdf_document(doc)
-}
-
 .to_matrix <- function(x, collapse = " ") {
     nrow <- max(x$row)
     ncol <- max(x$col)
     M <- matrix("", nrow, ncol)
-    x <- x[order(x$row, -x$xstart, decreasing = TRUE),]
+    x <- x[order(x$row, -x$x0, decreasing = TRUE),]
     for (i in seq_len(nrow)) {
         m <- which(x$row == i)
         if ( length(m) ) {
@@ -170,8 +122,8 @@ read.pdf <- function(file, pages = integer(), encoding = 'utf8', maxpages = Inf,
 }
 
 to_matrix <- function(x, collapse = " ") {
-    x <- x[order(x$page),]
-    x <- split(x, x$page)
+    x <- x[order(x$pid),]
+    x <- split(x, x$pid)
     lapply(x, .to_matrix, collapse = collapse)
 }
 
@@ -180,7 +132,7 @@ df_to_matrix <- function(x) {
     ucol <- sort(unique(x$col))
     M <- matrix("", length(urow), length(ucol))
 
-    x <- x[order(x$ystart, -x$xstart, decreasing = TRUE),]
+    x <- x[order(x$y0, -x$x0, decreasing = TRUE),]
     for ( i in seq_along(urow) ) {
         bi <- x$row == urow[i]
         for ( j in seq_along(ucol) ) {
@@ -195,20 +147,29 @@ df_to_matrix <- function(x) {
     M
 }
 
-#' @noRd
-#' @export
-extract_lines <- function(x) {
-    stopifnot(inherits(x, 'pdf_page'))
+
+##  ----------------------------------------------------------------------------
+#  extract_lines
+#  ============
+#' @title extract_lines
+#' @description TODO
+#' @param x an object inheriting from \code{pdf_document}.
+#' @param tol a threshold for aligning lines.
+#' @details Some details to be written.
+#' @return TODO
+#' @export 
+##  ----------------------------------------------------------------------------
+extract_lines <- function(x, tol = 0.05) {
+    stopifnot(inherits(x, 'pdf_document'))
     stopifnot(length(x$line) > 0)
 
-    res <- as.data.frame(do.call(rbind, simplify_list(x$line)))
-    colnames(res) <- c('linewidth', 'xstart', 'ystart', 'xend', 'yend')
+    res <- x$line
 
     res$horizontal <- FALSE
     res$vertical <- FALSE
 
-    res$horizontal[(res$yend - res$ystart) < 0.05] <- TRUE
-    res$vertical[(res$xend - res$xstart) < 0.05] <- TRUE
+    res$horizontal[abs(res$y1 - res$y0) < tol] <- TRUE
+    res$vertical[abs(res$x1 - res$x0) < tol] <- TRUE
 
     res
 }

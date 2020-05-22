@@ -20,7 +20,7 @@ align_columns <- function(x, method = c("fixed_width", "auto"), ...) {
 
 align_columns_fixed_width <- function(x, split_points) {
     x$col <- NA_integer_
-    xmean <- rowMeans(x[, c("xstart", "xend")])
+    xmean <- rowMeans(x[, c("x0", "x1")])
     for ( i in seq_along(split_points) ) {
         x$col[is.na(x$col) & (xmean < split_points[i])] <- i
     }
@@ -40,7 +40,7 @@ align_columns_fixed_width <- function(x, split_points) {
 #' @export
 ##  ----------------------------------------------------------------------------
 find_breaks <- function(x, lower_bound = 0.25) {
-    se <- unlist(mapply(seq, x[, 'xstart'], x[, 'xend'], MoreArgs = list(by = 0.1)))
+    se <- unlist(mapply(seq, x[, 'x0'], x[, 'x1'], MoreArgs = list(by = 0.1)))
     h <- hist(se, breaks = 500, plot = FALSE)
     low <- quantile(h$counts, lower_bound)
     h$counts[h$counts < low] <- 0L
@@ -62,8 +62,8 @@ find_breaks <- function(x, lower_bound = 0.25) {
 #' @export 
 ##  ----------------------------------------------------------------------------
 distribute_breaks <- function(x, ncols) {
-    min_x <- min(x$xstart)
-    max_x <- max(x$xend)
+    min_x <- min(x$x0)
+    max_x <- max(x$x1)
 
     x_length <- max_x - min_x
 

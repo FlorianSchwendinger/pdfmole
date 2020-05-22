@@ -1,5 +1,5 @@
 rm(list = ls())
-library(pdfmole)
+library(pdfminer)
 library(magrittr)
 library(data.table)
 
@@ -9,10 +9,10 @@ pdf_folder <- system.file("pdfs", package = "pdfmole")
 
 ##  column_span_1.pdf ----------------------------------------------------------
 pdf_file <- file.path(pdf_folder, "column_span_1.pdf")
-pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L, method = "csv")
 pdf
 
-df <- as.data.frame(pdf)
+df <- as.data.frame(df)
 head(df, 20)
 
 blocks <- group_blocks(df)
@@ -20,6 +20,7 @@ head(blocks, 20)
 
 rows <- align_rows(blocks, method = "hclust")
 rows <- rows[rows$row > 1,]
+unique(rows$row)
 head(rows, 20)
 
 # notice increase of quantile lower_bound
@@ -29,7 +30,7 @@ breaks
 cols <- align_columns(rows, method = "fixed_width", split_points = breaks) 
 head(cols, 20)
 colorplot(cols, breaks)
-intervalplot(cols)
+intervalplot(cols, breaks)
 
 M <- do.call(rbind, to_matrix(cols))
 M <- rm_empty_rows(M)
@@ -45,10 +46,10 @@ head(df_new)
 pdf_folder <- system.file("pdfs", package = "pdfmole")
 pdf_file <- file.path(pdf_folder, "cars.pdf")
 
-pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 1L)
+pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
 pdf
 
-d <- as.data.frame(pdf)
+d <- as.data.frame(pdf$text)
 head(d, 20)
     
 d <- group_blocks(d)
@@ -114,8 +115,8 @@ df_rm <- rm_char(df, ' ')
 df_rm <- rm_char(df_rm, '\n')
 head(df_rm, 20)
 
-select_area(df_rm)
-df_sort <- rm_bound(df_rm, 37.1, 565, 49.2, 780.4)
+bounds = select_area(df_rm)
+df_sort <- select_bounds(df_rm, bounds)
 textplot(df_sort)
 
 breaks <- find_breaks(df_sort)
@@ -128,7 +129,7 @@ textplot(df_sort, split_points = breaks)
 rows <- align_rows(df_sort, method = "exact_match")
 head(rows, 20)
     
-cols <- align_columns(rows, method = "fw", split_points = breaks) 
+cols <- align_columns(rows, method = "fixed_width", split_points = breaks) 
 head(cols, 20)
     
 colorplot(cols, breaks)
@@ -148,20 +149,20 @@ pdf
 df <- as.data.frame(pdf)
 head(df, 20)
 
-lines <- as.data.table(extract_lines(pdf[[1]]))
+lines <- as.data.table(extract_lines(pdf))
 head(lines, 20)
 
 cl <- align_lines(lines)
 
 plot_boxes(cl)
 
-row_breaks <- unique(unlist(cl[cl$horizontal, c('ystart')], use.names = F))
-col_breaks <- unique(unlist(cl[cl$vertical, c('xstart')], use.names = F))
+row_breaks <- unique(round(unlist(cl[cl$horizontal, c('y0')], use.names = F)), 2)
+col_breaks <- unique(round(unlist(cl[cl$vertical, c('x0')], use.names = F)), 2)
 
-rows <- align_rows(df, method = "fw", split_points = row_breaks)
+rows <- align_rows(df, method = "fixed_width", split_points = row_breaks)
 head(rows, 20)
 
-cols <- align_columns(rows, method = "fw", split_points = col_breaks)
+cols <- align_columns(rows, method = "fixed_width", split_points = col_breaks)
 head(cols, 20)
 
 M <- do.call(rbind, to_matrix(cols))
@@ -190,7 +191,7 @@ breaks <- find_breaks(rows, lower_bound = 0.5)
 breaks
 textplot(rows, breaks)
 
-cols <- align_columns(rows, method = "fw", split_points = breaks) 
+cols <- align_columns(rows, method = "fixed_width", split_points = breaks) 
 head(cols, 20)
 
 M <- do.call(rbind, to_matrix(cols))

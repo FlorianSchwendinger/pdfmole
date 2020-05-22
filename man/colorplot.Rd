@@ -4,7 +4,7 @@
 \alias{colorplot}
 \title{colorplot}
 \usage{
-colorplot(x, split_points = NULL, page = 0)
+colorplot(x, split_points = NULL, page = 1, ...)
 }
 \arguments{
 \item{x}{an object inheriting from \code{data.frame}.}

@@ -4,13 +4,10 @@
 \alias{align_lines}
 \title{Align all lines}
 \usage{
-align_lines(x)
+align_lines(x, ...)
 }
 \arguments{
 \item{x}{an object of class dataframe.}
-
-\item{tol}{a threshold of how many distance can be between line segments
-which should still be handled as connected.}
 
 \item{...}{additional arguments}
 }

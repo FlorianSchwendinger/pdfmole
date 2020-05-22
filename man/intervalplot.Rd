@@ -4,17 +4,27 @@
 \alias{intervalplot}
 \title{Intervalplot}
 \usage{
-intervalplot(x, by = 0.1, offset = NULL, breaks = 500,
-  grid_len = 20, widths = NULL, ...)
+intervalplot(
+  x,
+  breaks = NULL,
+  by = 0.1,
+  offset = NULL,
+  num_breaks = 500,
+  grid_len = 20,
+  widths = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an object inheriting from \code{data.frame}.}
+
+\item{breaks}{TODO}
 
 \item{by}{TODO}
 
 \item{offset}{TODO}
 
-\item{breaks}{TODO}
+\item{num_breaks}{TODO}
 
 \item{grid_len}{TODO}
 
