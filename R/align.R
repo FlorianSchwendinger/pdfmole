@@ -101,10 +101,11 @@ align_columns_fixed_width <- function(x, split_points) {
 #' @description TODO
 #' @param x an object inheriting from \code{'data.frame'}.
 #' @param lower_bound a lower bound indicating with which ...
+#' @param min_diff a minimum threshold for the distance between the breaks.
 #' @return Returns an vector containing the column breaks.
 #' @export
 ##  ----------------------------------------------------------------------------
-find_breaks <- function(x, lower_bound = 0.25) {
+find_breaks <- function(x, lower_bound = 0.25, min_diff = 10) {
     se <- unlist(mapply(seq, x[, 'x0'], x[, 'x1'], MoreArgs = list(by = 0.1)))
     h <- hist(se, breaks = 500, plot = FALSE)
     low <- quantile(h$counts, lower_bound)
@@ -113,6 +114,9 @@ find_breaks <- function(x, lower_bound = 0.25) {
     b <- !duplicated(group, fromLast = TRUE) & group > 0
     # breaks <- head(tail(h$breaks, -1)[b], -1)
     breaks <- tail(h$breaks, -1)[b]
+
+    # apply min_diff
+    breaks <- breaks[c(diff(breaks) > min_diff, TRUE)]
     breaks
 }
 
