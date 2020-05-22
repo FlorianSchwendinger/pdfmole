@@ -1,6 +1,4 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
+language: r
 warnings_are_errors: false
 cache: packages
 
@@ -13,7 +11,7 @@ branches:
 r:
   - oldrel
   - release
-  - devel
+  #- devel fails on osx, have to look into this...
 
 os:
   - linux
