@@ -1,18 +1,4 @@
-language: r
-warnings_are_errors: true
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-
-r_github_packages: FlorianSchwendinger/pdfminer
-
-branches:
-  only:
-    - "master"
-
-r:
-  - oldrel
-  - release
-  - devel
-
-os:
-  - linux
-  - osx 
+language: R
+cache: packages

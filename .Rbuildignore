@@ -4,3 +4,4 @@ README_files
 agstat.pdf
 column_span_1.pdf
 vnalf2011graz.pdf
+^\.travis\.yml$
