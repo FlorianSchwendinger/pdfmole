@@ -1,104 +1,61 @@
 rm(list = ls())
+library(pdfminer)
 library(pdfmole)
-library(magrittr)
-library(data.table)
 
 devtools::load_all()
 
 pdf_folder <- system.file("pdfs", package = "pdfmole")
 
-##  column_span_1.pdf ----------------------------------------------------------
-pdf_file <- file.path(pdf_folder, "column_span_1.pdf")
-pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
-pdf
-
-df <- as.data.frame(pdf)
-head(df, 20)
-
-blocks <- group_blocks(df)
-head(blocks, 20)
-
-rows <- align_rows(blocks, method = "hclust")
-rows <- rows[rows$row > 1,]
-head(rows, 20)
-
-# notice increase of quantile lower_bound
-breaks <- find_breaks(rows, lower_bound = 0.5)
-breaks
-
-cols <- align_columns(rows, method = "fixed_width", split_points = breaks) 
-head(cols, 20)
-colorplot(cols, breaks)
-intervalplot(cols)
-
-M <- do.call(rbind, to_matrix(cols))
-M <- rm_empty_rows(M)
-M
-
-df_new <- as_df(M[-1,])
-colnames(df_new) <- M[1,]
-head(df_new)
-
-
 ##  cars.pdf -------------------------------------------------------------------
 
-pdf_folder <- system.file("pdfs", package = "pdfmole")
 pdf_file <- file.path(pdf_folder, "cars.pdf")
 
-pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 1L)
-pdf
+pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+pdf$meta
 
-d <- as.data.frame(pdf)
-head(d, 20)
-    
+d <- pdf$text
 d <- group_blocks(d)
-head(d, 20)
-    
 d <- align_rows(d)
-head(d, 20)
 
-intervalplot(d)
-d <- align_columns(d, split_points = c(88, 130, 220))
-head(d, 20)
+# plots
+pixelplot(d, scale = 0.5)
+bboxplot(d, pid = 1L)
+textplot(d, pid = 1L)
 
+# alignment
+d <- align_columns(d, split_points = c(78, 126, 220))
 d <- d[grep("Courier", d$font),]
-head(d, 20)
 
-M <- do.call(rbind, to_matrix(d))
-M <- rm_empty_rows(M)
-M
-        
-cars_new <- as.data.frame(M[-1, -1], stringsAsFactors = FALSE)
-colnames(cars_new) <- M[1, -1]
-cars_new
+x <- mole(d, header = TRUE, simplify = TRUE)
+x
+all.equal(as.data.frame(x)[,-1], cars)
 
-stopifnot(all.equal(dim(cars), dim(cars_new)))
-stopifnot(all.equal(colnames(cars), colnames(cars_new)))
-stopifnot(all.equal(cars[,1], as.integer(cars_new[,1])))
 
 ## agstat.pdf ------------------------------------------------------------------
 
 pdf_file <- file.path(pdf_folder, "agstat.pdf")
+
 pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
-pdf
+pdf$meta
 
-df <- as.data.frame(pdf)
-head(df, 20)
+d <- pdf$text
+d <- group_blocks(d)
+d <- align_rows(d, method = "hclust")
 
-blocks <- group_blocks(df)
-head(blocks, 20)
+# plots
+pixelplot(d, scale = 0.5)
+bboxplot(d, pid = 1L)
+textplot(d, pid = 1L)
 
-rows <- align_rows(blocks, method = "hclust")
-rows <- rows[rows$row > 1,]
-head(rows, 20)
+# alignment
+splits <- find_breaks(d, 0.5)
+bboxplot(d, pid = 1L, splits)
 
-# notice increase of quantile lower_bound
-breaks <- find_breaks(rows, lower_bound = 0.5)
-breaks
+d <- align_columns(d, split_points = splits)
+d <- d[grep("Arial", d$font),]
 
-cols <- align_columns(rows, method = "fw", split_points = breaks) 
-head(cols, 20)
-textplot(cols, breaks)
+x <- mole(d, header = F, simplify = T)
+x
 
 ## vnalf2011graz.pdf  ---------------------------------------------------------
 
