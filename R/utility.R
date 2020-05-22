@@ -14,16 +14,6 @@ rm_na <- function(x) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 as_df <- function(x) as.data.frame(x, stringsAsFactors = FALSE)
 
 rm_empty_rows <- function(x) {
