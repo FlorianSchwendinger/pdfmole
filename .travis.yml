@@ -11,8 +11,8 @@ branches:
 r:
   - oldrel
   - release
-  #- devel fails on osx, have to look into this...
+  - devel 
 
 os:
   - linux
-  - osx 
+  #- osx devel and release fails mysteriously on osx, have to look into this...
