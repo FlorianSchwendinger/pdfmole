@@ -10,5 +10,7 @@ Description:  Provides several functions to transform the output of 'pdfminer'
 	the further transformation to a data.frame or matrix.
 Imports: checkmate
 Suggests: pdfminer
+Remotes:  
+    FlorianSchwendinger/pdfminer
 License: GPL-3
 RoxygenNote: 7.1.0
