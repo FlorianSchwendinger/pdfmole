@@ -1,6 +1,9 @@
----
-title: "pdfmole"
----
+# pdfmole
+
+
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.com/ben-schwen/pdfmole.svg?branch=master)](https://travis-ci.com/ben-schwen/pdfmole)
+<!-- badges: end -->
 
 The **pdfmole** package provides a bundle of functions designed to assist in
 extracting tables from PDF-files. To read-in the data we use the **pdfminer**
