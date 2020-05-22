@@ -5,13 +5,9 @@ Version: 1.0
 Authors@R: c(person("Ronald", "Hochreiter", role = "ctb"),
              person("Florian", "Schwendinger", role = c("aut", "cre"), email = "FlorianSchwendinger@gmx.at"),
              person("Benjamin", "Schwendinger", role = "aut"))
-Description: Provides an interface to 'PDFMiner'
-    <https://github.com/pdfminer/pdfminer.six> 
-    a 'Python' package for extracting information from
-    'PDF'-files. 'PDFMiner' has the goal to get all information available in the 
-    'PDF'-file, position of the characters, font type, font size, informations about
-    lines. Which makes it the perfect starting point for extracting tables from 
-    'PDF'-files.
+Description:  Provides several functions to transform the output of 'pdfminer' 
+	<https://github.com/FlorianSchwendinger/pdfminer> into a useful format for further data analysis. Allows 
+	the further transformation to a data.frame or matrix.
 Imports: checkmate
 Suggests: pdfminer
 License: GPL-3

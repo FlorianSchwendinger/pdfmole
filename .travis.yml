@@ -1,0 +1,18 @@
+language: r
+warnings_are_errors: true
+
+
+r_github_packages: FlorianSchwendinger/pdfminer
+
+branches:
+  only:
+    - "master"
+
+r:
+  - oldrel
+  - release
+  - devel
+
+os:
+  - linux
+  - osx 
