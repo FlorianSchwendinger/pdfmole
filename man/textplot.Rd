@@ -26,8 +26,8 @@ Plot the detected text
 Some details to be written.
 }
 \examples{
-pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
-pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
+load(pdf_file)
 
 df <- pdf$text
 head(df, 20)

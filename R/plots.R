@@ -15,8 +15,8 @@
 #' @details Some details to be written.
 #' @export 
 #' @examples
-#' pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
-#' pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+#' pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
+#' load(pdf_file)
 #'
 #' df <- pdf$text
 #' head(df, 20)
@@ -54,8 +54,8 @@ pixelplot.data.frame <- function(x, scale = 1, pids = integer(), las = 2, cex.ax
 #' @return TODO
 #' @export
 #' @examples
-#' pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
-#' pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+#' pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
+#' load(pdf_file)
 #'
 #' df <- pdf$text
 #' head(df, 20)
@@ -111,8 +111,8 @@ bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20,
 #' @return TODO
 #' @export
 #' @examples
-#' pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
-#' pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+#' pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
+#' load(pdf_file)
 #'
 #' df <- pdf$text
 #' head(df, 20)
