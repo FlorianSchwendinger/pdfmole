@@ -4,16 +4,18 @@
 \alias{find_breaks}
 \title{Find Breaks}
 \usage{
-find_breaks(x, lower_bound = 0.25)
+find_breaks(x, lower_bound = 0.25, min_diff = 10)
 }
 \arguments{
 \item{x}{an object inheriting from \code{'data.frame'}.}
 
 \item{lower_bound}{a lower bound indicating with which ...}
+
+\item{min_diff}{a minimum threshold for the distance between the breaks.}
 }
 \value{
 Returns an vector containing the column breaks.
 }
 \description{
-TODO
+Detect the breaks for columns aligning.
 }

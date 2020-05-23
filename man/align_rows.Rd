@@ -7,18 +7,30 @@
 align_rows(x, method = c("exact_match", "hclust", "fixed_width"), ...)
 }
 \arguments{
-\item{x}{an object of class \code{pdf\_df}.}
+\item{x}{an object of class \code{'data.frame'}.}
 
-\item{method}{a character string giving the name of the method.}
+\item{method}{a character string giving the name of the method. This must be 
+one of "exact_match", "hclust" or "fixed_width".}
 
 \item{...}{additional arguments}
 }
 \value{
-Returns a object of class \code{"pdf\_df"}.
+Returns an object inheriting from \code{'data.frame'}.
 }
 \description{
-Align the rows of an object of class \code{pdf\_df}.
+Align the rows of an object inheriting from \code{'data.frame'}.
 }
 \details{
-Some details to be written.
+Available methods for column aligning are:
+  
+exact_match:   
+Assigns row values based on exact matches of possible row values.
+The matching is performed on the start values of y-coordinates (y0).
+
+hclust:  
+Uses hierachical clustering for determining the rows.
+
+fixed_width:  
+Aligns the i-th row to a segment based on whether its center 
+((y0 + y1) / 2) is below this i-th split point.
 }

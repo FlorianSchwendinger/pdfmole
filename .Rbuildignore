@@ -1,7 +1,10 @@
 work
+Makefile
+logo
 vignette_devel
 README_files
 agstat.pdf
+README.*
 column_span_1.pdf
 vnalf2011graz.pdf
 ^\.travis\.yml$

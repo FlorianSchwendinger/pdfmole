@@ -29,9 +29,10 @@ unify_blocks <- function(x, collapse = "") {
 #  group_blocks
 #  ============
 #' @title Group Blocks
-#' @description TODO
+#' @description Groups cells based on the determined block value
 #' @param x an object inheriting from \code{'data.frame'}.
-#' @param collapse a character string
+#' @param collapse a character string to separate the results.
+#' @details This is an optional step...
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
@@ -49,9 +50,10 @@ group_blocks  <- function(x, collapse = "") {
 #  group_columns
 #  ============
 #' @title Group Columns
-#' @description TODO
+#' @description Groups cells based on the determined page, row and col values.
 #' @param x an object inheriting from \code{'data.frame'}.
-#' @param collapse a character string
+#' @param collapse a character string to separate the results.
+#' @details TODO
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
@@ -59,7 +61,8 @@ group_columns <- function(x, collapse = "") {
     assert_contains_columns(x, c("pid", "row", "col", "x0", "x1", "text"))
     bb_x_center <- (x$x0 + x$x1) / 2
     x <- x[order(bb_x_center),]
-    x <- aggregate(text ~ pid + row + col, data = x, FUN = paste, collapse = collapse)
+    x <- aggregate(text ~ pid + row + col, data = x, FUN = paste, 
+        collapse = collapse)
     x <- x[with(x, order(pid, row, col)),]
     rownames(x) <- NULL
     attr(x, "ordered") <- TRUE

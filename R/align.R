@@ -2,12 +2,24 @@
 #  align_rows
 #  ==========
 #' @title Align Rows
-#' @description Align the rows of an object of class \code{pdf\_df}.
-#' @param x an object of class \code{pdf\_df}.
-#' @param method a character string giving the name of the method.
+#' @description Align the rows of an object inheriting from \code{'data.frame'}.
+#' @param x an object of class \code{'data.frame'}.
+#' @param method a character string giving the name of the method. This must be 
+#' one of "exact_match", "hclust" or "fixed_width".
 #' @param ... additional arguments
-#' @details Some details to be written.
-#' @return Returns a object of class \code{"pdf\_df"}.
+#' @details Available methods for column aligning are:
+#'   
+#' exact_match:   
+#' Assigns row values based on exact matches of possible row values.
+#' The matching is performed on the start values of y-coordinates (y0).
+#' 
+#' hclust:  
+#' Uses hierachical clustering for determining the rows.
+#' 
+#' fixed_width:  
+#' Aligns the i-th row to a segment based on whether its center 
+#' ((y0 + y1) / 2) is below this i-th split point.
+#' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
 align_rows <- function(x, method = c("exact_match", "hclust", "fixed_width"), ...) {
@@ -66,10 +78,21 @@ align_rows_fixed_width <- function(x, split_points) {
 #  align_columns
 #  =============
 #' @title Align Columns
-#' @description TODO
+#' @description Align the columns of an object inheriting from 
+#' \code{'data.frame'}.
 #' @param x an object inheriting from \code{'data.frame'}.
-#' @param method a character string giving the method.
+#' @param method a character string giving the name of the method. This must be 
+#' one of "fixed_width" or "auto".
 #' @param ... additional arguments
+#' @details Available methods for column aligning are:
+#'   
+#' fixed_width:
+#' Aligns the i-th column to a segment based on whether its center 
+#' ((x0 + x1) / 2) is below this i-th split point.
+#'   
+#' auto:
+#' Uses find_breaks to determine the split points for columns aligning. 
+#' Afterwards uses fixed_width with the found split points.
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
@@ -98,7 +121,7 @@ align_columns_fixed_width <- function(x, split_points) {
 #  find_breaks
 # =============
 #' @title Find Breaks
-#' @description TODO
+#' @description Detect the breaks for columns aligning.
 #' @param x an object inheriting from \code{'data.frame'}.
 #' @param lower_bound a lower bound indicating with which ...
 #' @param min_diff a minimum threshold for the distance between the breaks.

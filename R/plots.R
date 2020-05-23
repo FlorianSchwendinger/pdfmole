@@ -9,11 +9,19 @@
 #' @param x an object inheriting from \code{data.frame}.
 #' @param scale a double giving the scale factor.
 #' @param pids an integer vector giving the pages to be considered in the pixelplot.
-#' @param las TODO
-#' @param cex.axis TODO
+#' @param las labels are parallel (=0) or perpendicular(=2) to axis
+#' @param cex.axis size of axis annotation relative to cex
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
 #' @export 
+#' @examples
+#' pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
+#' pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+#'
+#' df <- pdf$text
+#' head(df, 20)
+#'
+#' pixelplot(df, scale = 0.5)
 ##  ----------------------------------------------------------------------------
 pixelplot <- function(x, scale = 1, pids = integer(), las = 2, cex.axis = 0.7, ...) 
     UseMethod("pixelplot", x)
@@ -36,7 +44,7 @@ pixelplot.data.frame <- function(x, scale = 1, pids = integer(), las = 2, cex.ax
 #  bboxplot
 #  ============
 #' @title bboxplot
-#' @description TODO
+#' @description Plot the detected bounding boxes
 #' @param x an object inheriting from \code{data.frame}.
 #' @param split_points an vector containing the x-coordinates for splitting
 #' the page.
@@ -45,6 +53,14 @@ pixelplot.data.frame <- function(x, scale = 1, pids = integer(), las = 2, cex.ax
 #' @details Some details to be written.
 #' @return TODO
 #' @export
+#' @examples
+#' pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
+#' pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+#'
+#' df <- pdf$text
+#' head(df, 20)
+#'
+#' bboxplot(df, pid = 1L)
 ##  ----------------------------------------------------------------------------
 bboxplot <- function(x, split_points = NULL, pid = 1L, ...) 
     UseMethod("bboxplot", x)
@@ -85,14 +101,23 @@ bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20,
 #  textplot
 #  ============
 #' @title textplot
-#' @description TODO
+#' @description Plot the detected text
 #' @param x an object inheriting from \code{data.frame}.
-#' @param split_points an vector containing the x-coordinates for splitting the columns.
+#' @param split_points an vector containing the x-coordinates for splitting
+#' the page.
 #' @param pid the number of the page which shall be plotted.
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
 #' @return TODO
 #' @export
+#' @examples
+#' pdf_file <- system.file(file.path("pdfs","cars.pdf"), package = "pdfmole")
+#' pdf <- pdfminer::read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+#'
+#' df <- pdf$text
+#' head(df, 20)
+#'
+#' textplot(df, pid = 1L)
 ##  ----------------------------------------------------------------------------
 textplot <- function(x, split_points = NULL, pid = 1L, ...)
     UseMethod("textplot", x)
