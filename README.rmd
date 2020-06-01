@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# pdfmole
+# pdfmole <a href='https://github.com/ben-schwen/pdfmole'><img src='.graphics/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/ben-schwen/pdfmole.svg?branch=master)](https://travis-ci.com/ben-schwen/pdfmole)
@@ -48,12 +48,12 @@ The basic work flow of **pdfmole** can be divided into
 **pdfmole** is not finished yet the basic functionality works but there might
 be still some changes ahead when additional backends (functions to read in data
 from PDF-files) are added. Currently there are plans to add backends to
-[Apache PDFBox](https://pdfbox.apache.org/) and 
+[Apache PDFBox](https://pdfbox.apache.org/) and
 [Tesseract](https://github.com/tesseract-ocr/tesseract).
 
 ## Example usage
 ### Read data
-Use **pdfminer** to read the PDF-file into **R**, 
+Use **pdfminer** to read the PDF-file into **R**,
 
 ```r
 pdf_file <- file.path(system.file("pdfs", package = "pdfmole"), "cars.pdf")
@@ -68,9 +68,9 @@ pdf
 ## elements.
 ```
 **pdfminer** returns an object of class `"pdf_document"` which is a
-list containing several `data.frames`, the print method shows the number of 
-rows of each `data.frame`. 
-Each `data.frame` contains specific information about the PDF-file, 
+list containing several `data.frames`, the print method shows the number of
+rows of each `data.frame`.
+Each `data.frame` contains specific information about the PDF-file,
 for example the `data.frame` contains meta information about the PDF-file.
 
 ```r
@@ -114,10 +114,10 @@ head(d0)
 ## 6   1    NA                     NA                         NA      NA    NA      NA
 ```
 
-Based on this information we want to assign a row and column id to each 
+Based on this information we want to assign a row and column id to each
 row of the `data.frame`. This will allow us to transform character level
 `data.frame` into the typical format. Additionally we can use information like
-the location, font size or font type to filter out specific characters / 
+the location, font size or font type to filter out specific characters /
 blocks / rows.
 
 ### Align blocks (optional)
@@ -138,7 +138,7 @@ head(d, 3)
 ```
 
 ### Align rows
-The function `align_rows(x, method, ...)` currently implements three methods 
+The function `align_rows(x, method, ...)` currently implements three methods
 `"exact_match"`, `"hclust"` and `"fixed_width"`.
 
 ```r
@@ -198,7 +198,7 @@ head(d, 3)
 d <- d[grep("Courier", d$font),]
 ```
 
-### Group 
+### Group
 
 ```r
 d <- group_columns(d)
@@ -224,36 +224,36 @@ x
 ```
 
 ```
-## X1   speed  dist  
-## 1    4      2     
-## 2    4      10    
-## 3    7      4     
-## 4    7      22    
-## 5    8      16    
-## 6    9      10    
-## ...  ...    ...   
-## 9    10     34    
-## 14   12     24    
-## 15   12     28    
-## 17   13     34    
-## 18   13     34    
-## 19   13     46    
-## 20   14     26    
-## 21   14     36    
-## 25   15     26    
-## 27   16     32    
-## 28   16     40    
-## 30   17     40    
-## 31   17     50    
-## 35   18     84    
-## 39   20     32    
-## 42   20     56    
-## ...  ...    ...   
-## 45   23     54    
-## 46   24     70    
-## 47   24     92    
-## 48   24     93    
-## 49   24     120   
+## X1   speed  dist
+## 1    4      2
+## 2    4      10
+## 3    7      4
+## 4    7      22
+## 5    8      16
+## 6    9      10
+## ...  ...    ...
+## 9    10     34
+## 14   12     24
+## 15   12     28
+## 17   13     34
+## 18   13     34
+## 19   13     46
+## 20   14     26
+## 21   14     36
+## 25   15     26
+## 27   16     32
+## 28   16     40
+## 30   17     40
+## 31   17     50
+## 35   18     84
+## 39   20     32
+## 42   20     56
+## ...  ...    ...
+## 45   23     54
+## 46   24     70
+## 47   24     92
+## 48   24     93
+## 49   24     120
 ## 50   25     85
 ```
 The function `mole()` returns an object of class `mole`,

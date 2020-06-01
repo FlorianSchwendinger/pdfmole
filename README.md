@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# pdfmole
+# pdfmole <a href='https://github.com/ben-schwen/pdfmole'><img src='.graphics/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -57,8 +57,7 @@ backends to [Apache PDFBox](https://pdfbox.apache.org/) and
 
 ### Read data
 
-Use **pdfminer** to read the PDF-file into
-**R**,
+Use **pdfminer** to read the PDF-file into **R**,
 
 ``` r
 pdf_file <- file.path(system.file("pdfs", package = "pdfmole"), "cars.pdf")
@@ -212,36 +211,36 @@ x <- mole(d, header = TRUE, simplify = TRUE)
 x
 ```
 
-    ## X1   speed  dist  
-    ## 1    4      2     
-    ## 2    4      10    
-    ## 3    7      4     
-    ## 4    7      22    
-    ## 5    8      16    
-    ## 6    9      10    
-    ## ...  ...    ...   
-    ## 9    10     34    
-    ## 14   12     24    
-    ## 15   12     28    
-    ## 17   13     34    
-    ## 18   13     34    
-    ## 19   13     46    
-    ## 20   14     26    
-    ## 21   14     36    
-    ## 25   15     26    
-    ## 27   16     32    
-    ## 28   16     40    
-    ## 30   17     40    
-    ## 31   17     50    
-    ## 35   18     84    
-    ## 39   20     32    
-    ## 42   20     56    
-    ## ...  ...    ...   
-    ## 45   23     54    
-    ## 46   24     70    
-    ## 47   24     92    
-    ## 48   24     93    
-    ## 49   24     120   
+    ## X1   speed  dist
+    ## 1    4      2
+    ## 2    4      10
+    ## 3    7      4
+    ## 4    7      22
+    ## 5    8      16
+    ## 6    9      10
+    ## ...  ...    ...
+    ## 9    10     34
+    ## 14   12     24
+    ## 15   12     28
+    ## 17   13     34
+    ## 18   13     34
+    ## 19   13     46
+    ## 20   14     26
+    ## 21   14     36
+    ## 25   15     26
+    ## 27   16     32
+    ## 28   16     40
+    ## 30   17     40
+    ## 31   17     50
+    ## 35   18     84
+    ## 39   20     32
+    ## 42   20     56
+    ## ...  ...    ...
+    ## 45   23     54
+    ## 46   24     70
+    ## 47   24     92
+    ## 48   24     93
+    ## 49   24     120
     ## 50   25     85
 
 The function `mole()` returns an object of class `mole`,
