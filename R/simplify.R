@@ -33,7 +33,7 @@ guess_class <- function(x) {
 
 ##  ----------------------------------------------------------------------------
 #  simplify
-#  ====
+#  ========
 #' @title TODO
 #' @description TODO
 #' @param x an 

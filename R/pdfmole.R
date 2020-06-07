@@ -9,7 +9,7 @@
 ##  ----------------------------------------------------------------------------
 #  mole
 #  ====
-#' @title TODO
+#' @title Convert into Rectangular Format.
 #' @description TODO
 #' @param x an object inheriting from \code{data.frame}.
 #' @param header a logical

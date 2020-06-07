@@ -10,22 +10,29 @@ status](https://travis-ci.com/ben-schwen/pdfmole.svg?branch=master)](https://tra
 <!-- badges: end -->
 
 The **pdfmole** package provides a bundle of functions designed to
-assist in extracting tables from PDF-files. To read-in the data we use
-the [**pdfminer**](https://github.com/FlorianSchwendinger/pdfminer)
-package, however any package which returns the data in a similar format
-could be used.
+assist in extracting tables from PDF-files. To read-in the data either
+[**pdfminer**](https://github.com/FlorianSchwendinger/pdfminer),
+[**pdfboxr**](https://gitlab.com/schwe/pdfboxr) or
+[**tesseract**](https://CRAN.R-project.org/package=tesseract) can be
+used. However any package which returns the data in a similar format
+could be used. The packages **pdfminer** and **pdfboxr** can be used if
+the PDF-file store already the text (in most cases) if the PDF contains
+only images of the tables **tesseract** can be used.
 
 ## Installation
 
 ``` r
-# Install dev versions from GitHub:
-# install.packages("devtools")
+# install tesseract
+install.packages("tesseract")
 
 # install pdfminer
-devtools::install_github("FlorianSchwendinger/pdfminer")
+install.packages("pdfminer")
+
+# install pdfboxr
+install.packages("pdfboxr")
 
 # install pdfmole
-devtools::install_github("ben-schwen/pdfmole")
+install.packages("pdfmole")
 ```
 
 ## Workflow
@@ -45,19 +52,12 @@ The basic work flow of **pdfmole** can be divided into
 5.  transform the data into a rectangular format (`mole(x, header,
     simplify, keep)`)
 
-## Warning
-
-**pdfmole** is not finished yet the basic functionality works but there
-might be still some changes ahead when additional backends (functions to
-read in data from PDF-files) are added. Currently there are plans to add
-backends to [Apache PDFBox](https://pdfbox.apache.org/) and
-[Tesseract](https://github.com/tesseract-ocr/tesseract).
-
 ## Example usage
 
 ### Read data
 
-Use **pdfminer** to read the PDF-file into **R**,
+Use **pdfminer** to read the PDF-file into
+**R**,
 
 ``` r
 pdf_file <- file.path(system.file("pdfs", package = "pdfmole"), "cars.pdf")
@@ -282,15 +282,3 @@ head(as.matrix(x))
     ## [4,]  4     7   22
     ## [5,]  5     8   16
     ## [6,]  6     9   10
-
-``` r
-0
-```
-
-    ## [1] 0
-
-``` r
-0
-```
-
-    ## [1] 0
