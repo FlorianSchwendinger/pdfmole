@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdfmole.R
 \name{mole}
 \alias{mole}
-\title{TODO}
+\title{Convert into Rectangular Format.}
 \usage{
 mole(x, header = FALSE, simplify = FALSE, keep = FALSE)
 }
