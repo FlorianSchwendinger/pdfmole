@@ -26,11 +26,7 @@ Plot the count of letters
 Some details to be written.
 }
 \examples{
-pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
-load(pdf_file)
-
-df <- pdf$text
-head(df, 20)
-
-pixelplot(df, scale = 0.5)
+# df <- pdf$text
+# head(df, 20)
+# pixelplot(df, scale = 0.5)
 }

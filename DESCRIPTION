@@ -8,7 +8,8 @@ Authors@R: c(person("Ronald", "Hochreiter", role = "ctb"),
 Description:  Provides several functions to transform strings into a tabluar format, 
     based on their x, y coordinates.
 Imports: checkmate
-Suggests: pdfminer, pdfboxr, pdftools, tesseract, knitr
+Suggests: knitr
+Enhances: pdfboxr, pdfminer, tesseract
 VignetteBuilder: knitr
 License: GPL-3
 RoxygenNote: 7.1.0

@@ -10,7 +10,7 @@ pdf_folder <- system.file("pdfs", package = "pdfmole")
 
 pdf_file <- file.path(pdf_folder, "cars.pdf")
 
-pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+pdf <- read_chars(pdf_file, pages = 1:2, maxpages = 2L)
 pdf$meta
 
 d <- pdf$text
@@ -35,7 +35,7 @@ all.equal(as.data.frame(x)[,-1], cars)
 
 pdf_file <- file.path(pdf_folder, "agstat.pdf")
 
-pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+pdf <- read_chars(pdf_file, pages = 1, maxpages = 1L)
 pdf$meta
 
 d <- pdf$text
@@ -61,7 +61,7 @@ x
 
 pdf_file <- file.path(pdf_folder, "vnalf2011graz.pdf")
     
-pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+pdf <- read_chars(pdf_file, pages = 1, maxpages = 1L)
 pdf
 
 df <- as.data.frame(pdf)
@@ -99,7 +99,7 @@ M
 
 pdf_file <- file.path(pdf_folder, "agstat.pdf")
     
-pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+pdf <- read_chars(pdf_file, pages = 1, maxpages = 1L)
 pdf
 
 df <- as.data.frame(pdf)
@@ -129,7 +129,7 @@ View(M)
 
 pdf_file <- file.path(pdf_folder, "column_span_1.pdf")
 
-pdf <- read.pdf(pdf_file, pages = 1, maxpages = 1L)
+pdf <- read_chars(pdf_file, pages = 1, maxpages = 1L)
 pdf
 
 df <- as.data.frame(pdf)

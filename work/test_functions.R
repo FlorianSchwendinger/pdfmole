@@ -11,7 +11,7 @@ library(pdfmole)
 pdf_folder <- system.file("pdfs", package = "pdfmole")
 pdf_file <- file.path(pdf_folder, "cars.pdf")
 
-pdf <- read.pdf(pdf_file, pages = 1:2, maxpages = 2L)
+pdf <- read_chars(pdf_file, pages = 1:2, maxpages = 2L)
 pdf$meta
 
 d <- pdf$text

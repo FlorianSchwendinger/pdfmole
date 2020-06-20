@@ -16,9 +16,6 @@ the page.}
 
 \item{...}{additional arguments (currently not used).}
 }
-\value{
-TODO
-}
 \description{
 Plot the detected bounding boxes
 }
@@ -26,11 +23,7 @@ Plot the detected bounding boxes
 Some details to be written.
 }
 \examples{
-pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
-load(pdf_file)
-
-df <- pdf$text
-head(df, 20)
-
-bboxplot(df, pid = 1L)
+# df <- pdf$text
+# head(df, 20)
+# bboxplot(df, pid = 1L)
 }

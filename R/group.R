@@ -47,17 +47,16 @@ group_blocks  <- function(x, collapse = "") {
 }
 
 ##  ----------------------------------------------------------------------------
-#  group_columns
-#  ============
+#  group_cells
+#  ===========
 #' @title Group Columns
 #' @description Groups cells based on the determined page, row and col values.
 #' @param x an object inheriting from \code{'data.frame'}.
 #' @param collapse a character string to separate the results.
-#' @details TODO
 #' @return Returns an object inheriting from \code{'data.frame'}.
 #' @export
 ##  ----------------------------------------------------------------------------
-group_columns <- function(x, collapse = "") {
+group_cells <- function(x, collapse = "") {
     assert_contains_columns(x, c("pid", "row", "col", "x0", "x1", "text"))
     bb_x_center <- (x$x0 + x$x1) / 2
     x <- x[order(bb_x_center),]

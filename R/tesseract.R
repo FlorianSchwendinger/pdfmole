@@ -11,63 +11,31 @@ print.pdf_document <- function(x, ...) {
     writeLines("elements.")
 }
 
-
-ocr_image <- function(file, pid, engine) {
-    d <- tesseract::ocr_data(file, engine = engine)
-    bbox <- do.call(rbind, strsplit(d$bbox, split = ",", fixed = TRUE))
-    bbox <- as.data.frame(apply(bbox, 2, as.integer), stringsAsFactors=FALSE)
-    colnames(bbox) <- c("x0", "y0", "x1", "y1")
-    d$bbox <- NULL
-    d <- cbind(pid = pid, as.data.frame(d, stringsAsFactors = FALSE), bbox)
-    colnames(d)[2L] <- "text"
-    return(d)
-}
-
-
-
 ##  ----------------------------------------------------------------------------
-#  simplify
-#  ========
-#' @title TODO
-#' @description TODO
-#' @param x an 
-#' @param ... optional arguments
+#  from_tesseract
+#  ==============
+#' @title Convert Data from Tesseract
+#' @description Convert data obtained by \code{tesseract::ocr_data} into
+#' an format usable by \pkg{pdfmole}.
+#' @param x a tibble obtained by \code{tesseract::ocr_data}.
+#' @return a \code{data.frame} usable by \pkg{pdfmole}.
+#' @examples
+#' # ocr_data <- tesseract::ocr_data("my_file".png)
+#' # data("ocr_data")
+#' # add page number
+#' # ocr_data$pid <- 1L
+#' # from_tesseract(ocr_data)
 #' @export 
 ##  ----------------------------------------------------------------------------
-tesseract_read.pdf <- function(file, pages = integer(), dpi = 400L, engine = tesseract("eng"), 
-    temp_dir = tempdir(), temp_format = "tiff") {
-    
-    pdftools_is_installed_ <- requireNamespace("pdftools", quietly = TRUE)
-    tesseract_is_installed <- requireNamespace("tesseract0", quietly = TRUE)
-    stopifnot(pdftools_is_installed_, tesseract_is_installed)
-
-    if ( length(pages) == 0L ) {
-        pages <- seq_len(pdftools::pdf_info(pdffile)$pages)
-    }
-    
-    wd <- getwd()
-    setwd(temp_dir)
-    status <- tryCatch({
-        img_files <- pdftools::pdf_convert(file, format = temp_format, pages = pages, 
-                                           dpi = dpi, verbose = FALSE)
-        TRUE
-        }, error = function(e) e)
-    setwd(wd)
-    if ( !isTRUE(status) ) {
-        unlink(temp_dir)
-        stop(status)
-    }
-    
-    img_files <- file.path(temp_dir, img_files)
-    status <- tryCatch({
-        d <- mapply(ocr_image, img_files, pages, MoreArgs = list(engine = engine), 
-                    SIMPLIFY = FALSE, USE.NAMES = FALSE)
-        TRUE
-        }, error = function(e) e)
-    unlink(temp_dir)
-    if ( !isTRUE(status) ) stop(status)
-    metainfo <- data.frame(pid = pages)
-    dat <- list(metainfo=metainfo, text=do.call(rbind, d))
-    class(dat) <- "pdf_document"
-    return(dat)
+from_tesseract <- function(x) {
+    bbox <- do.call(rbind, strsplit(x$bbox, split = ",", fixed = TRUE))
+    bbox <- as.data.frame(apply(bbox, 2, as.integer), stringsAsFactors=FALSE)
+    colnames(bbox) <- c("x0", "y0", "x1", "y1")
+    x$bbox <- NULL
+    max_y <- max(max(bbox$y0), max(bbox$y1))
+    bbox$y0 <- max_y - bbox$y0
+    bbox$y1 <- max_y - bbox$y1
+    x <- cbind(as.data.frame(x, stringsAsFactors = FALSE), bbox)
+    colnames(x)[colnames(x) == "word"] <- "text"
+    x
 }

@@ -15,13 +15,9 @@
 #' @details Some details to be written.
 #' @export 
 #' @examples
-#' pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
-#' load(pdf_file)
-#'
-#' df <- pdf$text
-#' head(df, 20)
-#'
-#' pixelplot(df, scale = 0.5)
+#' # df <- pdf$text
+#' # head(df, 20)
+#' # pixelplot(df, scale = 0.5)
 ##  ----------------------------------------------------------------------------
 pixelplot <- function(x, scale = 1, pids = integer(), las = 2, cex.axis = 0.7, ...) 
     UseMethod("pixelplot", x)
@@ -51,16 +47,11 @@ pixelplot.data.frame <- function(x, scale = 1, pids = integer(), las = 2, cex.ax
 #' @param pid the number of the page which shall be plotted.
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
-#' @return TODO
 #' @export
 #' @examples
-#' pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
-#' load(pdf_file)
-#'
-#' df <- pdf$text
-#' head(df, 20)
-#'
-#' bboxplot(df, pid = 1L)
+#' # df <- pdf$text
+#' # head(df, 20)
+#' # bboxplot(df, pid = 1L)
 ##  ----------------------------------------------------------------------------
 bboxplot <- function(x, split_points = NULL, pid = 1L, ...) 
     UseMethod("bboxplot", x)
@@ -106,25 +97,25 @@ bboxplot.data.frame <- function(x, split_points = NULL, pid = 1L, grid_len = 20,
 #' @param split_points an vector containing the x-coordinates for splitting
 #' the page.
 #' @param pid the number of the page which shall be plotted.
+#' @param cex.text a numerical value giving the amount by which the text in the plot
+#'      should be magnified relative to the default.
+#' @param cex.xaxis a numerical value giving the amount by which the text on the x-axis
+#'      should be magnified relative to the default.
 #' @param ... additional arguments (currently not used).
 #' @details Some details to be written.
-#' @return TODO
 #' @export
 #' @examples
-#' pdf_file <- system.file(file.path("pdf_document","cars_pdf.Rdata"), package = "pdfmole")
-#' load(pdf_file)
-#'
-#' df <- pdf$text
-#' head(df, 20)
-#'
-#' textplot(df, pid = 1L)
+#' # df <- pdf$text
+#' # head(df, 20)
+#' # textplot(df, pid = 1L)
 ##  ----------------------------------------------------------------------------
-textplot <- function(x, split_points = NULL, pid = 1L, ...)
+textplot <- function(x, split_points = NULL, pid = 1L, cex.text = 0.8, cex.xaxis = 0.8, ...) {
     UseMethod("textplot", x)
+}
 
 #' @noRd
 #' @export
-textplot.data.frame <- function(x, split_points = NULL, pid = 1L, ...) {
+textplot.data.frame <- function(x, split_points = NULL, pid = 1L, cex.text = 0.8, cex.xaxis = 0.8, ...) {
     assert_contains_columns(x, c("pid", "text", "x0", "x1", "y0", "y1"))
     x <- rm_na(x)
     x <- x[x$pid == pid, ]
@@ -134,13 +125,12 @@ textplot.data.frame <- function(x, split_points = NULL, pid = 1L, ...) {
          c(min(x$y0, na.rm = TRUE), max(x$y1, na.rm = TRUE)),
          type = "n", xlab = "", ylab = "", xaxt = "n", ...)
 
-    graphics::text((x$x0 + x$x1) / 2, (x$y0+ x$y1) / 2, x$text, cex = 0.8,
-        adj = c(0.5, 0.5))
+    graphics::text((x$x0 + x$x1) / 2, (x$y0+ x$y1) / 2, x$text, cex = cex.text, adj = c(0.5, 0.5))
 
     xgrid <- seq(from = min(v, na.rm = TRUE), to = max(v, na.rm = TRUE), by = 20)
     xlines <- seq(from = min(v, na.rm = TRUE), to = max(v, na.rm = TRUE), by = 10)
 
-    axis(1, at = xgrid, labels = format(round(xgrid,0)), las = 2)
+    axis(1, at = xgrid, labels = format(round(xgrid,0)), las = 2, cex.axis = cex.xaxis)
 
     if (!is.null(split_points)) {
         abline(v = split_points, col = "red")

@@ -10,11 +10,18 @@
 #  mole
 #  ====
 #' @title Convert into Rectangular Format.
-#' @description TODO
+#' @description Convert the data from a sparse sparse simple triplet representation
+#'  into a dense list of vectors format.
 #' @param x an object inheriting from \code{data.frame}.
-#' @param header a logical
-#' @param simplify a logical
-#' @param keep a logical
+#' @param header a logical indicating whether the first line contains the names 
+#'  of the variables.
+#' @param simplify a logical giving if the results should be simplified.
+#'  If \code{FALSE} all vectors are character vectors, if \code{TRUE}
+#'  the correct types are inferred by \pkg{pdfmole}.
+#' @param keep a logical giving if the variables \code{"pid"} and \code{"row"}
+#'  should be kept in the output.
+#' @return
+#'  Returns an object of class \code{"mole"}.
 #' @export 
 ##  ----------------------------------------------------------------------------
 mole  <- function(x, header = FALSE, simplify = FALSE, keep = FALSE) {
