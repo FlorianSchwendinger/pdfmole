@@ -50,13 +50,13 @@ only images of the tables **tesseract** can be used.
 install.packages("tesseract") 
 
 # install pdfminer (optional)
-install.packages("pdfminer")
+remotes::install_github("FlorianSchwendinger/pdfminer")
 
 # install pdfboxr (optional)
-install.packages("pdfboxr")
+remotes::install_gitlab("schwe/pdfboxr")
 
 # install pdfmole
-install.packages("pdfmole")
+remotes::install_github("ben-schwen/pdfmole")
 ```
 
 
