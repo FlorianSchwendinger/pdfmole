@@ -5,11 +5,10 @@ Version: 1.0
 Authors@R: c(person("Ronald", "Hochreiter", role = "ctb"),
     person("Florian", "Schwendinger", role = c("aut", "cre"), email = "FlorianSchwendinger@gmx.at"),
     person("Benjamin", "Schwendinger", role = "aut"))
-Description:  Provides several functions to transform strings into a tabluar format, 
+Description: Provides several functions to transform strings into a tabluar format, 
     based on their x, y coordinates.
 Imports: checkmate
-Suggests: knitr
-Enhances: pdfboxr, pdfminer, tesseract
+Suggests: knitr, pdfboxr, pdfminer
 VignetteBuilder: knitr
 License: GPL-3
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

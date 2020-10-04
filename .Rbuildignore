@@ -8,6 +8,11 @@ inst/pdfs/mtcars.pdf
 inst/pdfs/vnalf2011graz.pdf
 inst/pdf_document
 vignettes/figures
+vignettes/figure
+vignettes/Usage_files
 vignettes/Usage.html
+vignettes/Usage.pdf
+vignettes/Usage.utf8.md
+vignettes/Usage.knit.md
 vignettes/Makefile
 ^\.travis\.yml$

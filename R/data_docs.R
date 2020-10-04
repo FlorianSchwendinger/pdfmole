@@ -10,14 +10,14 @@
 NULL
 
 
-#' Data Obtained by \code{pdfmoler::read_chars}
+#' Data Obtained by \code{pdfboxr::read_chars}
 #'
 #' This dataset contains the data from \code{"cars.pdf"} obtained 
 #' by \code{pdfminer::read_chars}.
 #'
 #' @docType data
 #' @keywords datasets
-#' @format an object of class \code{pdfmoler::read_chars} obtained by \code{pdfminer::read_chars}.
+#' @format an object of class \code{pdf\_document} obtained by \code{pdfboxr::read_chars}.
 #' @name data_pdfminer
 NULL
 

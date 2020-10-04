@@ -7,7 +7,7 @@
 \format{
 an object of class \code{pdf\_document} obtained by \code{pdfminer::read_chars}.
 
-an object of class \code{pdfmoler::read_chars} obtained by \code{pdfminer::read_chars}.
+an object of class \code{pdf\_document} obtained by \code{pdfboxr::read_chars}.
 }
 \description{
 This dataset contains the data from \code{"cars.pdf"} obtained 

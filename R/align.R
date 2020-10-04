@@ -20,7 +20,6 @@
 #' Aligns the i-th row to a segment based on whether its center 
 #' ((y0 + y1) / 2) is below this i-th split point.
 #' @return Returns an object inheriting from \code{'data.frame'}.
-#' @examples
 #' @export
 ##  ----------------------------------------------------------------------------
 align_rows <- function(x, method = c("exact_match", "hclust", "fixed_width"), ...) {
