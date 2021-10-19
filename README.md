@@ -1,6 +1,8 @@
 # pdfmole
+# data.table <a href="https://github.com/ben-schwen/pdfmole"><img src="https://raw.githubusercontent.com/ben-schwen/pdfmole/master/.graphics/logo.png" align="right" height="140" /></a>
+## Overview
 
-The new version can be found at [ben-schwen/pdfmole](https://github.com/ben-schwen/pdfmole).
+## Backends
 
 ## Installation
 ```R

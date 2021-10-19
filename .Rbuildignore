@@ -16,3 +16,4 @@ vignettes/Usage.utf8.md
 vignettes/Usage.knit.md
 vignettes/Makefile
 ^\.travis\.yml$
+.graphics/*
