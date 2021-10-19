@@ -11,4 +11,4 @@ Imports: checkmate
 Suggests: knitr, pdfboxr, pdfminer
 VignetteBuilder: knitr
 License: GPL-3
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

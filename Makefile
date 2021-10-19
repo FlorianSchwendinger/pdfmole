@@ -4,7 +4,6 @@ R ?= R
 .PHONY: all
 all:
 	$(MAKE) clean
-	$(MAKE) md
 	$(MAKE) doc
 	$(MAKE) build
 	$(MAKE) install
@@ -36,7 +35,7 @@ install:
 
 .PHONY: uninstall
 uninstall:
-	$(R) CMD REMOVE data.table || true
+	$(R) CMD REMOVE pdfmole || true
 
 .PHONY: test
 test:
@@ -46,6 +45,4 @@ test:
 check:
 	_R_CHECK_CRAN_INCOMING_REMOTE_=false $(R) CMD check pdfmole_1.0.tar.gz --as-cran --ignore-vignettes --no-stop-on-test-error
 
-.PHONY: md
-md:
-	$(R) -e 'rmarkdown::render("README.rmd")'
+

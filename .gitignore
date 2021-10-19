@@ -1,0 +1,27 @@
+# History files
+.RData
+.Rhistory
+
+# Package build process
+pdfmole_*.tar.gz
+pdfmole.Rcheck
+
+# RStudio IDE files
+.Rproj.user
+pdfmole.Rproj
+
+# temp files
+*~
+.DS_Store
+.idea
+*.sw[op]
+
+# common devel objects
+.Renviron
+lib
+library
+*.csv
+*.csvy
+*.RDS
+*.diff
+*.patch
